@@ -1,0 +1,37 @@
+{
+    "my_account":"My Account" ,
+    "languages":"Luuqado",
+    "english":"Ingriis",
+    "somali":"Soomaali",
+    "arabic":"Carabi",
+    
+    "welcome":"Soo Dhawaaw",
+    "search_courses":"Raadi Koorso",
+    "popular_courses":"Koorsoonyinka",
+    "watch":"Daawo",
+    "lessons":"Casharo",
+    "locked":"Xiran",
+    "courses":"Koorsooyin",
+    "my_courses":"koorsooyinkayga",
+    "favorites":"Ka heshay",
+    "dark_mode":"Habka Madoow",
+    "sign_out":"Ka Bax",
+    "veiw_profile":"Eeg Profile",
+    "forgot_password":"Ilaaway Sireed-ka",
+    "login":"Gal",
+    "dont_have_an_account":"Ma heesto cinwaan?",
+    "sign_up":"Sameeso",
+    "please_enter_your":"Fadlan gali magacaaga, Email-kaaga, Password-kaaga iyo Number-kaaga",
+    "password":"Sireed",
+    "confirm_password":"Ku celi sireed-ka",
+    "all_lessons_you_get":"Dhamaan Casharada aad Heleeso",
+    "buy_now":"Gado hada",
+    "course_detail":"FaahFaahinta koorsada",
+    "topics":"Mawduucyada",
+    "dear":"Wallal",
+    "enroll_now":"Is diiwaan gali",
+    "register":"diiwaan geli"
+
+
+
+}
