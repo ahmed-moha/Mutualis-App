@@ -1,14 +1,16 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jbuti_app/app/constants.dart';
+import 'package:jbuti_app/app/data/category_model.dart';
 
 class CategoryCard extends StatelessWidget {
-  const CategoryCard({super.key});
-
+  const CategoryCard({super.key, required this.category});
+final CategoryModel category;
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height / 4,
+      //height: Get.height / 4,
       width: Get.width / 3,
       margin: const EdgeInsets.only(left: 10, right: 10, bottom: 20, top: 10),
       decoration: BoxDecoration(
@@ -26,12 +28,12 @@ class CategoryCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         child: Stack(
           children: <Widget>[
-            const Positioned(
+             Positioned(
               top: -20,
               left: -20,
               child: CircleAvatar(
                 backgroundColor: kPrimaryColor,
-                backgroundImage: AssetImage("assets/doctor_1.png"),
+                backgroundImage: ExtendedNetworkImageProvider(category.image??"https://craftsnippets.com/articles_images/placeholder/placeholder.jpg"),
                 radius: 60,
               ),
             ),
@@ -40,22 +42,28 @@ class CategoryCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: const <Widget>[
+                children:  <Widget>[
                   Flexible(
                     child: Text(
-                      "Header",
-                      maxLines: 1,
+                    category.label??  "",
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.white
+                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Flexible(
+                   Flexible(
                     child: Text(
-                      "Information Information Information Information ",
+                     "${category.doctors?.length} Doctors" ,
                        maxLines: 2,
                       overflow: TextOverflow.ellipsis,
+                       style: const TextStyle(
+                        color: Colors.white
+                      ),
                     ),
                   ),
                 ],

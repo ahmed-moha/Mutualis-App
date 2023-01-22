@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-const kEndPoint = 'https://4127a1d62c85.ngrok.io/api';
+const kEndPoint = 'https://mutualis-dj.com/api';
 //const kEndPoint = 'http://192.168.10.129:9000/api/';
 const kIntroScreen = 'introScreen';
 const kUserInfo = 'userInfo';
-const kPrimaryColor = Color(0xff684DFA);
+const kPrimaryColor = Color(0xFF1a60be);
 const kSecondaryLightColor = Color(0xffB0DCD2);
 const double kPadding=16;
 const String kLogo = 'assets/logos/1.png';

@@ -12,6 +12,9 @@ dependencies:
     sdk: flutter
   get_storage: ^2.0.3
   iconly: ^1.0.1
+  http: ^0.13.5
+  modal_progress_hud_nsn: ^0.3.0
+  extended_image: ^6.3.4
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

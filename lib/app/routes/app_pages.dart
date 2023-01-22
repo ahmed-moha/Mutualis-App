@@ -1,7 +1,11 @@
 import 'package:get/get.dart';
 
+import '../modules/ambulances/bindings/ambulances_binding.dart';
+import '../modules/ambulances/views/ambulances_view.dart';
 import '../modules/appointments/bindings/appointments_binding.dart';
 import '../modules/appointments/views/appointments_view.dart';
+import '../modules/category/bindings/category_binding.dart';
+import '../modules/category/views/category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/user/bindings/user_binding.dart';
@@ -29,6 +33,16 @@ class AppPages {
       name: _Paths.APPOINTMENTS,
       page: () => const AppointmentsView(),
       binding: AppointmentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY,
+      page: () => const CategoryView(),
+      binding: CategoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.AMBULANCES,
+      page: () => const AmbulancesView(),
+      binding: AmbulancesBinding(),
     ),
   ];
 }

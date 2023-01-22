@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:jbuti_app/app/constants.dart';
+
+import '../modules/user/controllers/user_controller.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -11,20 +14,15 @@ class AppDrawer extends StatelessWidget {
         children: <Widget>[
           _createHeader(),
           _createDrawerItem(
-              icon: IconlyLight.home,
-              
-              text: 'Accueil',
-              onTap: () =>
-                  Navigator.pushReplacementNamed(context, "/HomePage")
-          ),
+              icon: IconlyLight.home, text: 'Home', onTap: () => Get.back()),
           _createDrawerItem(
-              icon:IconlyLight.calendar,
+              icon: IconlyLight.calendar,
               text: 'Rendez-vous',
               onTap: () =>
                   Navigator.pushReplacementNamed(context, "/HomePage")),
 
           _createDrawerItem(
-              icon:IconlyLight.calendar,
+              icon: IconlyLight.calendar,
               text: 'Mon dossier',
               onTap: () =>
                   Navigator.pushReplacementNamed(context, "/HomePage")),
@@ -40,21 +38,27 @@ class AppDrawer extends StatelessWidget {
               onTap: () =>
                   Navigator.pushReplacementNamed(context, "/actualities")),
           const Divider(),
-          _createDrawerItem(icon: IconlyBroken.logout,
-            text: 'Déconnexion',
-            onTap: () => Navigator.pushReplacementNamed(context, "/login")),
+          // _createDrawerItem(icon: IconlyBroken.logout,
+          //   text: 'Déconnexion',
+          //   onTap: () => Get.toNamed(Routes.USER),),
+          GetBuilder<UserController>(builder: (cont) {
+            return _createDrawerItem(
+                icon: IconlyLight.logout,
+                text: 'Log out',
+                onTap: () => cont.logOut());
+          }),
+
           /*_createDrawerItem(icon: Icons.face, text: 'Authors'),
           _createDrawerItem(icon: Icons.account_box, text: 'Flutter Documentation'),
           _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),*/
           const Divider(),
-          _createDrawerItem(icon: Icons.info, text: 'A propos',
-          onTap: () => Navigator.pushReplacementNamed(context, "/about")
-          ),
+          _createDrawerItem(
+              icon: Icons.info,
+              text: 'A propos',
+              onTap: () => Navigator.pushReplacementNamed(context, "/about")),
           ListTile(
             title: const Text('0.0.1'),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
         ],
       ),
@@ -69,9 +73,8 @@ class AppDrawer extends StatelessWidget {
             color: Colors.blue,
             image: DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage('assets/images/drawer_header_background.png')
-            )
-        ),
+                image:
+                    AssetImage('assets/images/drawer_header_background.png'))),
         child: Stack(children: const <Widget>[
           Positioned(
               bottom: 12.0,
@@ -85,11 +88,13 @@ class AppDrawer extends StatelessWidget {
   }
 
   Widget _createDrawerItem(
-      {required IconData icon, required String text, required GestureTapCallback onTap}) {
+      {required IconData icon,
+      required String text,
+      required GestureTapCallback onTap}) {
     return ListTile(
       title: Row(
         children: <Widget>[
-          Icon(icon,color: kPrimaryColor),
+          Icon(icon, color: kPrimaryColor),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(text),

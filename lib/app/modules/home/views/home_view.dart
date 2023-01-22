@@ -6,6 +6,9 @@ import 'package:jbuti_app/app/components/AppDrawer.dart';
 import 'package:jbuti_app/app/components/category_card.dart';
 import 'package:jbuti_app/app/components/seprator_card.dart';
 import 'package:jbuti_app/app/constants.dart';
+import 'package:jbuti_app/app/modules/category/controllers/category_controller.dart';
+import 'package:jbuti_app/app/modules/category/views/categories_view.dart';
+import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -65,10 +68,51 @@ class HomeView extends GetView<HomeController> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children:   [
-           const UserCard(),
-            Seprator(title: "Categories",onPressed: (){},),
-            const CategoryCard()
+          children: [
+            const UserCard(),
+            GetBuilder<CategoryController>(
+              builder: (cont) {
+                return Visibility(
+                  visible:cont.categories.isNotEmpty ,
+                  child: Seprator(
+                    title: "Categories",
+                    onPressed: () =>Get.to(()=>const CategoriesView()),
+                  ),
+                );
+              }
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: Get.height / 4,
+              child: GetBuilder<CategoryController>(
+                builder: (cont) {
+                  if (cont.isLoadingCategory) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (cont.categories.isEmpty) {
+                    return const Center(
+                      child: Text("No Categories"),
+                    );
+                  } else {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: cont.categories.length,
+                      itemBuilder: (context, index) =>  CategoryCard(category: cont.categories[index]),
+                    );
+                  }
+                },
+              ),
+            ),
+            GetBuilder<CategoryController>(
+              builder: (cont) {
+                return Visibility(
+                  visible:cont.categories.isNotEmpty ,
+                  child: Seprator(
+                    title: "Doctors",
+                    onPressed: () =>Get.to(()=>const CategoriesView()),
+                  ),
+                );
+              }
+            ),
           ],
         ),
       ),
@@ -83,21 +127,23 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(kPadding),
-      child: Column(
-       crossAxisAlignment: CrossAxisAlignment.start,
-       children: const [
-          Text("Hello,"),
-       SizedBox(
-         height: 5,
-       ),
-       Text(
-         "Ahmed Mohamed",
-         style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-       ),
-       ],
-      ),
-    );
+    return GetBuilder<UserController>(builder: (cont) {
+      return Padding(
+        padding: const EdgeInsets.all(kPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Hello,"),
+            const SizedBox(
+              height: 5,
+            ),
+            Text(
+              cont.user.name ?? "",
+              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

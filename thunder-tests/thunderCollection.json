@@ -1,0 +1,39 @@
+[
+  {
+    "_id": "d8fdb046-291b-4594-b72b-5fa4bcfc8397",
+    "colName": "Mutualis",
+    "created": "2023-01-16T13:05:17.823Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "beba3888-82a6-4990-8f27-a5495ee940c5",
+        "name": "users",
+        "containerId": "",
+        "created": "2023-01-16T13:05:24.687Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "e21ce90d-323f-4e16-9312-2aa79936d9d1",
+        "name": "doctors",
+        "containerId": "",
+        "created": "2023-01-16T13:05:30.060Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "ccc32ebf-2e13-434b-a923-cd90857c3dab",
+        "name": "ambulances",
+        "containerId": "",
+        "created": "2023-01-22T11:17:43.108Z",
+        "sortNum": 30000
+      }
+    ],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "options": {
+        "baseUrl": "{{URL}}"
+      },
+      "envId": "e9f28eec-3c95-417c-b671-a7e9a78635ff"
+    }
+  }
+]

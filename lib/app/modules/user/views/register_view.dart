@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
-import 'package:jbuti_app/app/constants.dart';
-import 'package:jbuti_app/app/modules/user/views/register_view.dart';
+import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../controllers/user_controller.dart';
+import '../../../constants.dart';
 
-class UserView extends GetView<UserController> {
-  const UserView({Key? key}) : super(key: key);
+class RegisterView extends GetView {
+  const RegisterView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(builder: (cont) {
       return ModalProgressHUD(
-        inAsyncCall: cont.isLoginLoading,
+        inAsyncCall: cont.isRegisterLoading,
         progressIndicator: const SizedBox(),
         child: Scaffold(
             // appBar: AppBar(
@@ -24,7 +23,7 @@ class UserView extends GetView<UserController> {
             // ),
             body: SingleChildScrollView(
           child: Form(
-            key: cont.loginKey,
+            key: cont.registerKey,
             child: Column(
               children: [
                 Container(
@@ -51,22 +50,22 @@ class UserView extends GetView<UserController> {
                         ),
                       ),
                       /*Container(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 15.0,
-                                        left: 40.0,
-                                        right: 40.0,
-                                      ),
-                                      child: Text(
-                                        'Bienvenue sur Mutualis App',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Color(0xFFFFFFFF),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 15.0,
+                                            left: 40.0,
+                                            right: 40.0,
+                                          ),
+                                          child: Text(
+                                            'Bienvenue sur Mutualis App',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xFFFFFFFF),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),*/
+                                      ),*/
                       Container(
                         transform: Matrix4.translationValues(0.0, 50.0, 0.0),
                         margin: const EdgeInsets.only(
@@ -92,6 +91,46 @@ class UserView extends GetView<UserController> {
                         ),
                         child: Column(
                           children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: TextFormField(
+                                keyboardType: TextInputType.phone,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return "Please enter Name";
+                                  }
+                                  return null;
+                                },
+                                controller: cont.rName,
+                                textCapitalization: TextCapitalization.none,
+                                decoration: InputDecoration(
+                                  hintText: 'Name',
+                                  hintStyle: const TextStyle(
+                                    color: Color(0xFFb1b2c4),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(60),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(60),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.black.withOpacity(0.05),
+                                  prefixIcon: const Icon(
+                                    IconlyLight.profile,
+                                    color: Color(0xFF6aa6f8),
+                                  ),
+                                  //
+                                ),
+                              ),
+                            ),
                             Container(
                               margin: const EdgeInsets.all(20.0),
                               child: TextFormField(
@@ -102,7 +141,7 @@ class UserView extends GetView<UserController> {
                                   }
                                   return null;
                                 },
-                                controller: cont.email,
+                                controller: cont.rEmail,
                                 textCapitalization: TextCapitalization.none,
                                 decoration: InputDecoration(
                                   hintText: 'Email',
@@ -141,7 +180,7 @@ class UserView extends GetView<UserController> {
                                   }
                                   return null;
                                 },
-                                controller: cont.password,
+                                controller: cont.rPassword,
                                 keyboardType: TextInputType.visiblePassword,
                                 //controller: passwordTextEditingController,
                                 obscureText: cont.isVisiblePassword,
@@ -204,16 +243,16 @@ class UserView extends GetView<UserController> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
                     ),
-                    onPressed: () => cont.login(),
+                    onPressed: () => cont.register(),
                     child: Align(
                       alignment: Alignment.center,
-                      child: cont.isLoginLoading
+                      child: cont.isRegisterLoading
                           ? const CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            )
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          )
                           : const Text(
-                              'Login',
+                              'Submit',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -231,36 +270,17 @@ class UserView extends GetView<UserController> {
                       padding: const EdgeInsets.all(20),
                       child: RichText(
                         text: TextSpan(
-                            text: "Don't have an account?",
+                            text: "I have an account?",
                             style:
                                 TextStyle(color: Theme.of(context).hoverColor),
                             children: const [
                               TextSpan(
-                                  text: " Create one",
+                                  text: " Login",
                                   style: TextStyle(color: kPrimaryColor))
                             ]),
                       ),
                     ),
-                    onTap: () => Get.to(() => const RegisterView()),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(
-                    top: 0.0,
-                    left: 20.0,
-                    right: 20.0,
-                  ),
-                  child: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: RichText(
-                        text: const TextSpan(
-                          text: "Forgot Password?",
-                          style: TextStyle(color: kPrimaryColor),
-                        ),
-                      ),
-                    ),
-                    onTap: () {},
+                    onTap: () => Get.back(),
                   ),
                 ),
               ],
