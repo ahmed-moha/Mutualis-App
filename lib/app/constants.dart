@@ -7,7 +7,7 @@ const kIntroScreen = 'introScreen';
 const kUserInfo = 'userInfo';
 const kPrimaryColor = Color(0xFF1a60be);
 const kSecondaryLightColor = Color(0xffB0DCD2);
-const double kPadding=16;
+const double kPadding = 16;
 const String kLogo = 'assets/logos/1.png';
 const String kLanguage = 'language';
 const String kIsDarkMode = 'false';
@@ -16,6 +16,8 @@ const String kLoading = 'assets/images/loading.json';
 const String currentToken = 'currentToken';
 const String kFavoriteCourses = 'course';
 const String kCourses = 'courses';
+const String defaultPhotoUrl =
+    "https://d3n8a8pro7vhmx.cloudfront.net/imaginebetter/pages/313/meta_images/original/blank-profile-picture-973460_1280.png";
 
 // ignore: constant_identifier_names
 const String KIsIntro = 'intro';
@@ -27,13 +29,10 @@ const Color kPrimaryLightColor = Color(0xFF4485FD);
 
 const Color kPrimaryDarkColor = Color(0xFF03071e);
 const Color kSecondaryDarkColor = Color(0xFF023047);
-void erroMessage( String? message) {
-  Get.snackbar(
-     "uh oh!",
-    message ?? "",
-    margin: EdgeInsets.zero,
-    borderRadius: 0,
-    backgroundColor: Colors.pink,
-    colorText: Colors.white
-  );
+void erroMessage(String? message) {
+  Get.snackbar("uh oh!", message ?? "",
+      margin: EdgeInsets.zero,
+      borderRadius: 0,
+      backgroundColor: Colors.pink,
+      colorText: Colors.white);
 }

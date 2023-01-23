@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +10,9 @@ import 'app/theme.dart';
 import 'generated/locales.g.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Firebase.initializeApp();
   await GetStorage.init();
   final box = GetStorage();
   await box.writeIfNull(kLanguage, const Locale('en', 'US').toLanguageTag());
@@ -18,7 +22,7 @@ void main() async {
   final strLocale = box.read(kLanguage) as String;
   bool isIntro = box.read(KIsIntro);
   bool isLogin = box.hasData(kUserInfo);
-  var data=await box.read(kUserInfo);
+  var data = await box.read(kUserInfo);
   print(kUserInfo);
   print(isLogin);
   runApp(

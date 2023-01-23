@@ -15,6 +15,27 @@ dependencies:
   http: ^0.13.5
   modal_progress_hud_nsn: ^0.3.0
   extended_image: ^6.3.4
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
+  cloud_firestore: ^4.3.1
+  firebase_messaging: ^14.2.1
+  permission_handler: ^10.2.0
+  custom_pop_up_menu: ^1.2.4
+  giphy_picker: ^3.0.1
+  photo_view: ^0.14.0
+  image_picker: ^0.8.6+1
+  firebase_storage: ^11.0.10
+  bubble: ^1.2.1
+  flutter_ringtone_player: ^3.2.0
+  flutter_svg: ^1.1.6
+  logger: ^1.1.0
+  fluttertoast: ^8.1.2
+  cached_network_image: ^3.2.3
+  intl: ^0.17.0
+  curved_navigation_bar: ^1.0.3
+  focused_menu: ^1.0.5
+  dropdown_search: ^5.0.5
+  like_button: ^2.0.5
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

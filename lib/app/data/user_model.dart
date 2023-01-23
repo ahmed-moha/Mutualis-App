@@ -15,6 +15,15 @@ class UserModel {
   int? doctorCategoryId;
   String? createdAt;
   String? updatedAt;
+  String? uid;
+
+  String? photoUrl;
+  bool? isDoctor;
+  bool? isAdmin;
+
+  int? state;
+  String? lastSeen;
+  String? fcmToken;
 
   UserModel(
       {this.id,
@@ -32,10 +41,17 @@ class UserModel {
       this.verified,
       this.doctorCategoryId,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.uid,
+      this.photoUrl,
+      this.isDoctor,
+      this.isAdmin,
+      this.state,
+      this.lastSeen,
+      this.fcmToken});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = int.parse(json['id'].toString());
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -51,6 +67,15 @@ class UserModel {
     doctorCategoryId = json['doctor_category_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    uid = json['uid'];
+
+    photoUrl = json['photoUrl'];
+    isDoctor = json['isDoctor'];
+    isAdmin = json['isAdmin'];
+
+    state = json['state'];
+    lastSeen = json['lastSeen'];
+    fcmToken = json['fcmToken'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +96,16 @@ class UserModel {
     data['doctor_category_id'] = doctorCategoryId;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+
+    data['uid'] = uid;
+
+    data['photoUrl'] = photoUrl;
+    data['isDoctor'] = isDoctor;
+    data['isAdmin'] = isAdmin;
+
+    data['state'] = state;
+    data['lastSeen'] = lastSeen;
+    data['fcmToken'] = fcmToken;
     return data;
   }
 }

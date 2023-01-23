@@ -40,6 +40,11 @@ class UserView extends GetView<UserController> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                       Image.asset(
+                            "assets/images/logo.png",
+                            color: Colors.white,
+                            height: 100,
+                          ),
                       Container(
                         child: const Text(
                           'Connexion',
@@ -95,7 +100,7 @@ class UserView extends GetView<UserController> {
                             Container(
                               margin: const EdgeInsets.all(20.0),
                               child: TextFormField(
-                                keyboardType: TextInputType.phone,
+                               // keyboardType: TextInputType.emailAddress,
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
                                     return "Please enter valid email";

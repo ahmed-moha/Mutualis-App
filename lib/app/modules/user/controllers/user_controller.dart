@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,7 +16,9 @@ class UserController extends GetxController {
   }
   UserModel user = UserModel();
   final box = GetStorage();
-
+  bool get isDoctor => user.isDoctor ?? false;
+  bool get isAdmin => user.isAdmin ?? false;
+  bool get hasData => box.hasData(kUserInfo);
   // LOGIN PART
   bool isLoginLoading = false;
   TextEditingController email = TextEditingController();
@@ -31,7 +34,11 @@ class UserController extends GetxController {
   // REGISTER PART
   bool isVisiblePassword = false;
   GlobalKey<FormState> loginKey = GlobalKey<FormState>();
-    GlobalKey<FormState> registerKey = GlobalKey<FormState>();
+  GlobalKey<FormState> registerKey = GlobalKey<FormState>();
+  GlobalKey<FormState> addDoctorKey = GlobalKey<FormState>();
+
+  bool isDoctorLoading = false;
+
   updateVisiblity(bool isVisible) {
     isVisiblePassword = isVisible;
     update();
@@ -108,8 +115,37 @@ class UserController extends GetxController {
   logOut() async {
     await box.write(kUserInfo, null);
     await box.remove(kUserInfo);
+    await FirebaseAuth.instance.signOut();
     update();
     Get.offAllNamed(Routes.USER);
+  }
+
+  registerDoctor(
+      {required String name,
+      required String email,
+      required String password,
+      required String catId,
+      required String about}) async {
+    if (addDoctorKey.currentState?.validate() ?? false) {
+      try {
+        isDoctorLoading = true;
+        update();
+        var data = await UserProvider().registerDoctor(
+            name: name,
+            email: email,
+            password: password,
+            catId: catId,
+            about: about);
+        Get.snackbar("Success", "Successfuly registered",
+            backgroundColor: Colors.green, colorText: Colors.white);
+        Get.back();
+      } catch (e) {
+        log(e.toString(), name: "Register Doc error");
+        Get.snackbar("oops!", e.toString());
+      }
+      isDoctorLoading = false;
+      update();
+    }
   }
 
   // @override

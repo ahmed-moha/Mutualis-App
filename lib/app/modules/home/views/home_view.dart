@@ -1,16 +1,15 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:jbuti_app/app/components/AppDrawer.dart';
-import 'package:jbuti_app/app/components/category_card.dart';
-import 'package:jbuti_app/app/components/seprator_card.dart';
 import 'package:jbuti_app/app/constants.dart';
-import 'package:jbuti_app/app/modules/category/controllers/category_controller.dart';
-import 'package:jbuti_app/app/modules/category/views/categories_view.dart';
+import 'package:jbuti_app/app/modules/home/views/admin_view.dart';
 import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
 import '../controllers/home_controller.dart';
+import 'patient_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -48,14 +47,18 @@ class HomeView extends GetView<HomeController> {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(13)),
-              child: Container(
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                ),
-                child: Image.asset("assets/user.png", fit: BoxFit.fill),
-              ),
+              child: GetBuilder<UserController>(builder: (cont) {
+                return Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                  ),
+                  child: ExtendedImage.network(
+                      cont.user.photoUrl ?? defaultPhotoUrl,
+                      fit: BoxFit.fill),
+                );
+              }),
             ),
           ),
           const Icon(
@@ -65,60 +68,20 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const UserCard(),
-            GetBuilder<CategoryController>(
-              builder: (cont) {
-                return Visibility(
-                  visible:cont.categories.isNotEmpty ,
-                  child: Seprator(
-                    title: "Categories",
-                    onPressed: () =>Get.to(()=>const CategoriesView()),
-                  ),
-                );
-              }
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: Get.height / 4,
-              child: GetBuilder<CategoryController>(
-                builder: (cont) {
-                  if (cont.isLoadingCategory) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (cont.categories.isEmpty) {
-                    return const Center(
-                      child: Text("No Categories"),
-                    );
-                  } else {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: cont.categories.length,
-                      itemBuilder: (context, index) =>  CategoryCard(category: cont.categories[index]),
-                    );
-                  }
-                },
-              ),
-            ),
-            GetBuilder<CategoryController>(
-              builder: (cont) {
-                return Visibility(
-                  visible:cont.categories.isNotEmpty ,
-                  child: Seprator(
-                    title: "Doctors",
-                    onPressed: () =>Get.to(()=>const CategoriesView()),
-                  ),
-                );
-              }
-            ),
-          ],
-        ),
-      ),
+      body: GetBuilder<UserController>(builder: (cont) {
+        if (cont.isAdmin) {
+          return const AdminView();
+        } else if (cont.isDoctor) {
+          return const Text("Doctor Screen");
+        } else {
+          return const Phome();
+        }
+      }),
     );
   }
 }
+
+
 
 class UserCard extends StatelessWidget {
   const UserCard({

@@ -1,4 +1,4 @@
-package com.example.jbuti_app
+package com.mutualisgroup.app
 
 import io.flutter.embedding.android.FlutterActivity
 

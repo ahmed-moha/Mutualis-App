@@ -39,15 +39,27 @@ class RegisterView extends GetView {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        child: const Text(
-                          'Connexion',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
-                            color: Color(0xFFFFFFFF),
-                          ),
+                      const Text(
+                        'Inscription',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                          color: Color(0xFFFFFFFF),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Bienvenue sur Mutualis App',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFFFFFFFF),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       /*Container(
                                         child: Padding(
@@ -98,7 +110,7 @@ class RegisterView extends GetView {
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 20.0),
                               child: TextFormField(
-                                keyboardType: TextInputType.phone,
+                              //  keyboardType: TextInputType.phone,
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
                                     return "Please enter Name";
@@ -134,7 +146,7 @@ class RegisterView extends GetView {
                             Container(
                               margin: const EdgeInsets.all(20.0),
                               child: TextFormField(
-                                keyboardType: TextInputType.phone,
+                              //  keyboardType: TextInputType.phone,
                                 validator: (val) {
                                   if (val == null || val.isEmpty) {
                                     return "Please enter valid email";
@@ -248,9 +260,9 @@ class RegisterView extends GetView {
                       alignment: Alignment.center,
                       child: cont.isRegisterLoading
                           ? const CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          )
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            )
                           : const Text(
                               'Submit',
                               style: TextStyle(
