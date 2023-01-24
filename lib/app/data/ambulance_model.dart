@@ -22,7 +22,7 @@ class AmbulanceModel {
     id = json['id'];
     nom = json['nom'];
     telephone = json['telephone'];
-    photo = json['photo'];
+    photo = json['photo']==""?"https://craftsnippets.com/articles_images/placeholder/placeholder.jpg":json['photo'] ?? "https://craftsnippets.com/articles_images/placeholder/placeholder.jpg";
     matriculation = json['matriculation'];
     adresse = json['adresse'];
     createdAt = json['created_at'];

@@ -7,9 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:jbuti_app/app/data/doctor_model.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
+import '../../../../generated/locales.g.dart';
 import '../../../constants.dart';
 import '../../../data/Time.dart';
+import '../../ambulances/views/appointments_list.dart';
 
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({Key? key, required this.model}) : super(key: key);
@@ -81,7 +84,9 @@ class MapScreenState extends State<AppointmentPage>
    _appbar() {
     return AppBar(
       elevation: 0,
-      title: Text("RDV avec ${model?.name ?? ""}"),
+      title: Text("${LocaleKeys.appointment_with.tr} ${model?.name ?? ""}",style: TextStyle(
+        color: Theme.of(context).hoverColor
+      ),),
       backgroundColor: kPrimaryColor,
       leading: Builder(
         builder: (context) => // Ensure Scaffold is in context
@@ -125,9 +130,9 @@ class MapScreenState extends State<AppointmentPage>
           if (snap.connectionState == ConnectionState.done &&
               decodedData['data'].length == 0) {
             return Container(
-              child: const Center(
+              child:  Center(
                 child: Text(
-                  'Aucune donnée trouvée',
+                  LocaleKeys.no_data_found.tr,
                   //style: GoogleFonts.roboto(color: Colors.grey),
                 ),
               ),
@@ -277,13 +282,16 @@ class MapScreenState extends State<AppointmentPage>
 
         String date = dateEditingController.text;
         String hour = hourEditingController.text;
-        var response =
-            await http.post(Uri.parse('$kEndPoint/enquire-appointment'), body: {
+        final user=Get.find<UserController>().user;
+        var body={
           'date': date,
           'time': hour,
-          'patient_id': patient_id.toString(),
+          'patient_id': user.id.toString(),
           'doctor_id': model?.id.toString(),
-        });
+        };
+        log(body.toString(),name: "VALUE");
+        var response =
+            await http.post(Uri.parse('$kEndPoint/enquire-appointment'), body: body);
         //widget.onChangedStep(1)
 
         setState(() {
@@ -301,12 +309,12 @@ class MapScreenState extends State<AppointmentPage>
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => MyAppointmentsPage(),
-                    //   ),
-                    // );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyAppointmentsPage(),
+                      ),
+                    );
                   },
                   child: const Text('OK'),
                 ),
@@ -369,7 +377,7 @@ class MapScreenState extends State<AppointmentPage>
                 width: double.infinity,
               ),
               Container(
-                color: const Color(0xffFFFFFF),
+                  color: Theme.of(context).cardColor,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 0),
                   child: Column(
@@ -387,10 +395,10 @@ class MapScreenState extends State<AppointmentPage>
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const <Widget>[
+                                children:  <Widget>[
                                   Text(
-                                    'Informations du rdv',
-                                    style: TextStyle(
+                                    'Informations ${LocaleKeys.my_appointments.tr}',
+                                    style: const TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -399,27 +407,27 @@ class MapScreenState extends State<AppointmentPage>
                             ],
                           )),
                       TabBar(
-                        unselectedLabelColor: Colors.black,
-                        labelColor: kPrimaryColor,
+                        unselectedLabelColor:  Theme.of(context).hoverColor,
+                        labelColor:  Theme.of(context).hoverColor,
                         isScrollable: true,
-                        tabs: const [
+                        tabs:  [
                           Tab(
-                            text: "Lundi",
+                            text: LocaleKeys.monday.tr,
                           ),
                           Tab(
-                            text: "Mardi",
+                            text: LocaleKeys.tuesday.tr,
                           ),
                           Tab(
-                            text: "Mercredi",
+                            text: LocaleKeys.wednesday.tr,
                           ),
                           Tab(
-                            text: "Jeudi",
+                            text: LocaleKeys.thursday.tr,
                           ),
                           Tab(
-                            text: "Vendredi",
+                            text: LocaleKeys.firday.tr,
                           ),
                           Tab(
-                            text: "Samedi",
+                            text: LocaleKeys.starday.tr,
                           ),
                         ],
                         controller: _tabController,
@@ -457,10 +465,10 @@ class MapScreenState extends State<AppointmentPage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: const <Widget>[
+                                        children:  <Widget>[
                                           Text(
-                                            'Date de rdv souhaitée',
-                                            style: TextStyle(
+                                            LocaleKeys.appointment_date.tr,
+                                            style: const TextStyle(
                                                 fontSize: 16.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -490,7 +498,7 @@ class MapScreenState extends State<AppointmentPage>
                                           // },
                                           controller: dateEditingController,
                                           decoration: InputDecoration(
-                                            hintText: 'Date de rdv souhaitée',
+                                            hintText: LocaleKeys.appointment_date.tr,
                                             hintStyle: const TextStyle(
                                               color: Color(0xFFb1b2c4),
                                             ),
@@ -500,15 +508,14 @@ class MapScreenState extends State<AppointmentPage>
                                                   BorderRadius.circular(60),
                                             ),
                                             focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
+                                              borderSide: const BorderSide(
+                                                  color: kPrimaryColor),
                                               borderRadius:
                                                   BorderRadius.circular(60),
                                             ),
                                             filled: true,
                                             fillColor:
-                                                Colors.black.withOpacity(0.05),
+                                             Theme.of(context).cardColor,
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
                                               vertical: 20.0,
@@ -578,10 +585,10 @@ class MapScreenState extends State<AppointmentPage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: const <Widget>[
+                                        children:  <Widget>[
                                           Text(
-                                            'Heure de rdv souhaitée',
-                                            style: TextStyle(
+                                            LocaleKeys.appointment_hour.tr,
+                                            style: const TextStyle(
                                                 fontSize: 16.0,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -611,7 +618,7 @@ class MapScreenState extends State<AppointmentPage>
                                           // },
                                           controller: hourEditingController,
                                           decoration: InputDecoration(
-                                            hintText: 'Heure de rdv souhaitée',
+                                            hintText: LocaleKeys.appointment_hour.tr,
                                             hintStyle: const TextStyle(
                                               color: Color(0xFFb1b2c4),
                                             ),
@@ -663,12 +670,13 @@ class MapScreenState extends State<AppointmentPage>
                                           backgroundColor:
                                               const Color(0xFF4894e9),
                                           padding: const EdgeInsets.all(15),
+                                          shape: const StadiumBorder()
                                         ),
-                                        child: const Align(
+                                        child:  Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            'Valider',
-                                            style: TextStyle(
+                                           LocaleKeys.submit.tr,
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),

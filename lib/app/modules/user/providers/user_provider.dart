@@ -79,6 +79,8 @@ class UserProvider extends GetConnect {
       required String email,
       required String password,
       required String userId,
+      String? desc,
+      String? type,
       bool isDoctor = false}) async {
     try {
       await messaging.getToken().then((value) {
@@ -99,38 +101,79 @@ class UserProvider extends GetConnect {
 
       final List<DocumentSnapshot> documents = result.docs;
       if (documents.isEmpty) {
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(firebaseUser.uid)
-            .set({
-          "id": userId,
-          "uid": firebaseUser.uid,
-          "email": firebaseUser.email,
-          "name": name,
-          "photoUrl": defaultPhotoUrl,
-          "isDoctor": isDoctor,
-          "isAdmin": false,
-          "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
-          "state": 1,
-          "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
-          "fcmToken": fcmToken
-        });
+        if (isDoctor == true) {
+          log("true");
+          await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(firebaseUser.uid)
+              .set({
+            "id": userId,
+            "uid": firebaseUser.uid,
+            "email": firebaseUser.email,
+            "name": name,
+            "photoUrl": defaultPhotoUrl,
+            "isDoctor": isDoctor,
+            "isAdmin": false,
+            "type": type ?? "",
+            "description": desc ?? "",
+            "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
+            "state": 1,
+            "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
+            "fcmToken": fcmToken
+          });
 
-        var data = jsonEncode({
-          "id": int.parse(userId),
-          "uid": firebaseUser.uid,
-          "email": firebaseUser.email,
-          "name": name,
-          "photoUrl": defaultPhotoUrl,
-          "isDoctor": isDoctor,
-          "isAdmin": false,
-          "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
-          "state": 1,
-          "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
-          "fcmToken": fcmToken
-        });
-        final decodedData = jsonDecode(data);
-        return decodedData;
+          var data = jsonEncode({
+            "id": int.parse(userId),
+            "uid": firebaseUser.uid,
+            "email": firebaseUser.email,
+            "name": name,
+            "photoUrl": defaultPhotoUrl,
+            "isDoctor": isDoctor,
+            "isAdmin": false,
+            "type": type ?? "",
+            "description": desc ?? "",
+            "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
+            "state": 1,
+            "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
+            "fcmToken": fcmToken
+          });
+          final decodedData = jsonDecode(data);
+          log("SAVED");
+          return decodedData;
+        } else {
+          await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(firebaseUser.uid)
+              .set({
+            "id": userId,
+            "uid": firebaseUser.uid,
+            "email": firebaseUser.email,
+            "name": name,
+            "photoUrl": defaultPhotoUrl,
+            "isDoctor": isDoctor,
+            "isAdmin": false,
+            "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
+            "state": 1,
+            "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
+            "fcmToken": fcmToken
+          });
+
+          var data = jsonEncode({
+            "id": int.parse(userId),
+            "uid": firebaseUser.uid,
+            "email": firebaseUser.email,
+            "name": name,
+            "photoUrl": defaultPhotoUrl,
+            "isDoctor": isDoctor,
+            "isAdmin": false,
+            "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
+            "state": 1,
+            "lastSeen": DateTime.now().millisecondsSinceEpoch.toString(),
+            "fcmToken": fcmToken
+          });
+          final decodedData = jsonDecode(data);
+          return decodedData;
+        }
         // User currentuser = firebaseUser;
         // log(currentuser.toString(), name: "CURRENT USER INFO");
         // log(data.toString(), name: "USER INFO");
@@ -218,7 +261,10 @@ class UserProvider extends GetConnect {
       required String email,
       required String password,
       required String catId,
+      required String catName,
       required String about}) async {
+
+        print("CALLED");
     var response = await http.post(
       Uri.parse("$kEndPoint/register-doctor"),
       body: {
@@ -233,11 +279,17 @@ class UserProvider extends GetConnect {
       final decodedData = jsonDecode(response.body);
       if (!decodedData["success"]) throw decodedData;
       await saveToFirebase(
-          name: name,
-          email: email,
-          password: password,
-          userId: decodedData["user"]["id"].toString(),
-          isDoctor: true);
+        name: name,
+        email: email,
+        password: password,
+        userId: decodedData["user"]["id"].toString(),
+        isDoctor: true,
+        desc: about,
+        type: catName
+      );
+      Get.back();
+    }else{
+      throw response.body;
     }
   }
 

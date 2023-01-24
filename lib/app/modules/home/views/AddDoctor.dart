@@ -457,6 +457,7 @@ class AddDoctorPageState extends State<AddDoctorPage>
                                       email: emailEditingController.text,
                                       password: passwordEditingController.text,
                                       catId: categorieId.toString(),
+                                      catName: categorieLabel,
                                       about: aboutEditingController.text),
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

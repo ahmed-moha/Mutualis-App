@@ -8,6 +8,7 @@ abstract class Routes {
   static const APPOINTMENTS = _Paths.APPOINTMENTS;
   static const CATEGORY = _Paths.CATEGORY;
   static const AMBULANCES = _Paths.AMBULANCES;
+  static const LANGUAGES = _Paths.LANGUAGES;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const APPOINTMENTS = '/appointments';
   static const CATEGORY = '/category';
   static const AMBULANCES = '/ambulances';
+  static const LANGUAGES = '/languages';
 }

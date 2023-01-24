@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
+import '../../generated/locales.g.dart';
 import '../constants.dart';
 
 class Seprator extends StatelessWidget {
@@ -25,9 +27,9 @@ class Seprator extends StatelessWidget {
           visible: onPressed!=null,
           child: TextButton(
             onPressed: onPressed,
-            child: const Text(
-              "More",
-              style: TextStyle(
+            child:  Text(
+              LocaleKeys.more.tr,
+              style: const TextStyle(
                   fontWeight: FontWeight.w500, color: kPrimaryColor),
             ),
           ),

@@ -8,6 +8,8 @@ import '../modules/category/bindings/category_binding.dart';
 import '../modules/category/views/category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/languages/bindings/languages_binding.dart';
+import '../modules/languages/views/languages_view.dart';
 import '../modules/user/bindings/user_binding.dart';
 import '../modules/user/views/user_view.dart';
 
@@ -43,6 +45,11 @@ class AppPages {
       name: _Paths.AMBULANCES,
       page: () => const AmbulancesView(),
       binding: AmbulancesBinding(),
+    ),
+    GetPage(
+      name: _Paths.LANGUAGES,
+      page: () => const LanguagesView(),
+      binding: LanguagesBinding(),
     ),
   ];
 }

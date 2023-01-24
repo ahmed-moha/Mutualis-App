@@ -25,6 +25,13 @@
         "containerId": "",
         "created": "2023-01-22T11:17:43.108Z",
         "sortNum": 30000
+      },
+      {
+        "_id": "4f7f520e-3c5f-456d-a3c3-3b31747cb391",
+        "name": "notification",
+        "containerId": "",
+        "created": "2023-01-24T12:55:15.506Z",
+        "sortNum": 40000
       }
     ],
     "settings": {

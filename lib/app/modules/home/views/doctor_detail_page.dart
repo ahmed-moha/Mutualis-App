@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconly/iconly.dart';
 
 import 'package:jbuti_app/app/constants.dart';
 import 'package:jbuti_app/app/data/doctor_model.dart';
@@ -11,6 +12,7 @@ import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:like_button/like_button.dart';
 
+import '../../../../generated/locales.g.dart';
 import '../../../components/ChattingPage.dart';
 import 'appointment.dart';
 
@@ -136,24 +138,27 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget _appbar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        BackButton(color: Theme.of(context).primaryColor),
-        const LikeButton(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          BackButton(color: Theme.of(context).primaryColor),
+          const LikeButton(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+          )
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     TextStyle titleStyle =
-        const TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
-  
+         TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Theme.of(context).hoverColor);
+
     return Scaffold(
       //backgroundColor: LightColor.extraLightBlue,
       body: SafeArea(
@@ -166,10 +171,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               height: 300,
               //child: Image.asset("assets/icone.png", fit: BoxFit.contain,),
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                //borderRadius: const BorderRadius.all(Radius.circular(30)),
                 shape: BoxShape.rectangle,
                 image: DecorationImage(
-                    image: ExtendedNetworkImageProvider(widget.doctor.photoUrl??""), fit: BoxFit.fill),
+                    image: ExtendedNetworkImageProvider(
+                        widget.doctor.photoUrl ?? ""),
+                    fit: BoxFit.fill),
               ),
             ),
             DraggableScrollableSheet(
@@ -180,16 +187,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 String channelId;
                 String token;
                 return Container(
-                  height:MediaQuery.of(context).size.height * .5,
+                  height: MediaQuery.of(context).size.height * .5,
                   padding: const EdgeInsets.only(
                       left: 19,
                       right: 19,
                       top: 16), //symmetric(horizontal: 19, vertical: 16),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
+                  decoration:  BoxDecoration(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
-                    color: Colors.white,
+                    color:  Theme.of(context).cardColor,
                   ),
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -203,8 +210,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                widget.doctor.name??"",
+                                widget.doctor.name ?? "",
                                 style: titleStyle,
+                                
                               ),
                               const SizedBox(
                                 width: 10,
@@ -219,196 +227,39 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             ],
                           ),
                           subtitle: Text(
-                            widget.doctor.type??"",
+                            widget.doctor.type ?? "",
                             style: const TextStyle(
-                                fontSize: 12 * 1.2,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 12,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                        const Divider(
-                          thickness: .3,
-                          color:Colors.grey,
+                        const SizedBox(
+                          height: 8,
                         ),
-                        Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                child: Text("A propos", style: titleStyle))),
+                        const Divider(
+                          thickness: 0.8,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          LocaleKeys.about.tr,
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Text(
                           widget.doctor.description ?? '',
-                          style: const TextStyle(
-                              fontSize: 14 * 1.2,
-                              color: Colors.black),
+                          style:  TextStyle(
+                              fontSize: 12, color: Theme.of(context).hoverColor),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: widget.loading
-                              ? const Center(child: CircularProgressIndicator())
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Container(
-                                      height: 45,
-                                      width: 45,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: widget.availableAbonnement
-                                              ? const Color(0xffdf4d12)
-                                              : Colors.cyan),
-                                      child: IconButton(
-                                          icon: const Icon(
-                                            Icons.call,
-                                            color: Colors.white,
-                                          ),
-                                          onPressed: () async {
-                                            // if (widget.availableAbonnement) {
-                                            //    await Permissions
-                                            //           .cameraAndMicrophonePermissionsGranted()
-                                            //       ? {
-                                            //           channelId = Random()
-                                            //               .nextInt(1000)
-                                            //               .toString(),
-                                            //           await CallUtils.getToken(
-                                            //                   channelId)
-                                            //               .then((res) {
-                                            //             token = res;
-                                            //             if (token != null) {
-                                            //               CallUtils.call(
-                                            //                   currUserId: widget
-                                            //                       .currentuserid,
-                                            //                   currUserName: widget
-                                            //                       .currentusername,
-                                            //                   currUserAvatar: widget
-                                            //                       .currentuserphoto,
-                                            //                   receiverId: widget
-                                            //                       .doctor.uid,
-                                            //                   receiverAvatar:
-                                            //                       widget.doctor
-                                            //                           .photo,
-                                            //                   receiverName:
-                                            //                       widget.doctor
-                                            //                           .name,
-                                            //                   voiceCall: true,
-                                            //                   channelId:
-                                            //                       channelId,
-                                            //                   token: token,
-                                            //                   context: context);
-                                            //             }
-                                            //           }),
-                                            //         }
-                                            //       : {};
-                                            // } else {
-                                            //   Navigator.push(context,
-                                            //       MaterialPageRoute(
-                                            //           builder: (context) {
-                                            //     return InitWaafiPaymentPage(
-                                            //       doctorId: widget.doctor.id
-                                            //           .toString(),
-                                            //       doctorType:
-                                            //           widget.doctor.type,
-                                            //     );
-                                            //   }));
-                                            // }
-                                          }),
-                                      //  Navigator.pushReplacementNamed(context, "/call");
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        height: 45,
-                                        width: 45,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: widget.availableAbonnement
-                                                ? const Color(0xffdf4d12)
-                                                : Colors.grey
-                                                    .withAlpha(150)),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            if (widget.availableAbonnement) {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                return Chat(
-                                                  receiverId: widget.doctor.uid??"",
-                                                  receiverAvatar:
-                                                      widget.doctor.photoUrl??"",
-                                                  receiverName:
-                                                      widget.doctor.name??"",
-                                                  currUserId:
-                                                      widget.currentuserid,
-                                                  currUserName:
-                                                      widget.currentusername,
-                                                  currUserAvatar:
-                                                      widget.currentuserphoto,
-                                                );
-                                              }));
-                                            } else {
-                                              // Navigator.push(context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) {
-                                              //   return InitWaafiPaymentPage(
-                                              //       doctorId: widget.doctor.id
-                                              //           .toString(),
-                                              //       doctorType:
-                                              //           widget.doctor.type);
-                                              // }));
-                                            }
-                                          },
-                                          child: const Icon(
-                                            Icons.chat_bubble,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                        //  Navigator.pushReplacementNamed(context, "/call");
-                                        ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    ElevatedButton(
-                                    
-                                      
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      ),
-                                      onPressed: () {
-                                        if (widget.availableAbonnement) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AppointmentPage(
-                                                      model: widget.doctor),
-                                            ),
-                                          );
-                                        } else {
-                                          // Navigator.push(context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) {
-                                          //   return InitWaafiPaymentPage(
-                                          //       doctorId:
-                                          //           widget.doctor.id.toString(),
-                                          //       doctorType: widget.doctor.type);
-                                          // }));
-                                        }
-                                      },
-                                      child: const Text(
-                                        "Prendre rendez-vous",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        const SizedBox(
+                          height: 25,
                         ),
                         Row(
                           children: const [
@@ -416,6 +267,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               image: AssetImage("assets/images/waafi.png"),
                               width: 50,
                             ),
+                            SizedBox(width: 5,),
                             Text(
                               "Payer la téléconsultation par Waafi au : 3152",
                               style: TextStyle(
@@ -424,12 +276,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             )
                           ],
                         ),
+                        const SizedBox(height: 8,),
                         Row(
                           children: const [
                             Image(
                               image: AssetImage("assets/images/dmoney.png"),
                               width: 50,
                             ),
+                               SizedBox(width: 5,),
                             Text(
                               "Payer la téléconsultation par DMoney",
                               style: TextStyle(
@@ -445,6 +299,94 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               },
             ),
             _appbar(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(5),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(8)),
+              child: const Icon(
+                IconlyBold.call,
+                color: Colors.white,
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                if (widget.availableAbonnement) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Chat(
+                      receiverId: widget.doctor.uid ?? "",
+                      receiverAvatar: widget.doctor.photoUrl ?? "",
+                      receiverName: widget.doctor.name ?? "",
+                      currUserId: widget.currentuserid,
+                      currUserName: widget.currentusername,
+                      currUserAvatar: widget.currentuserphoto,
+                    );
+                  }));
+                } else {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) {
+                  //   return InitWaafiPaymentPage(
+                  //       doctorId: widget.doctor.id
+                  //           .toString(),
+                  //       doctorType:
+                  //           widget.doctor.type);
+                  // }));
+                }
+              },
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(8)),
+                child: const Icon(
+                  IconlyBold.chat,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (widget.availableAbonnement) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AppointmentPage(model: widget.doctor),
+                        ),
+                      );
+                    } else {
+                      // Navigator.push(context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) {
+                      //   return InitWaafiPaymentPage(
+                      //       doctorId:
+                      //           widget.doctor.id.toString(),
+                      //       doctorType: widget.doctor.type);
+                      // }));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: kPrimaryColor, elevation: 0),
+                  child: Text(LocaleKeys.make_appointment.tr),
+                ),
+              ),
+            ),
           ],
         ),
       ),

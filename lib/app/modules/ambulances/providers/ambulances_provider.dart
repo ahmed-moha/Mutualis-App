@@ -12,7 +12,7 @@ class AmbulancesProvider extends GetConnect {
   // }
 
   getAmbulances() async {
-    var response = await http.post(Uri.parse("$kEndPoint/ambulances"));
+    var response = await http.get(Uri.parse("$kEndPoint/ambulances"));
     if (response.statusCode == 200) {
       final decodedData = jsonDecode(response.body);
       List data = decodedData["data"];

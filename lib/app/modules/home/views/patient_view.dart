@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,7 +5,10 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:jbuti_app/app/modules/home/controllers/home_controller.dart';
 
+import '../../../../generated/locales.g.dart';
+import '../../../components/AppDrawer.dart';
 import '../../../components/category_card.dart';
 import '../../../components/seprator_card.dart';
 import '../../../constants.dart';
@@ -14,6 +16,7 @@ import '../../../data/doctor_model.dart';
 import '../../../general.dart';
 import '../../category/controllers/category_controller.dart';
 import '../../category/views/categories_view.dart';
+import '../../user/controllers/user_controller.dart';
 import 'doctor_detail_page.dart';
 import 'home_view.dart';
 
@@ -24,109 +27,163 @@ class Phome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const UserCard(),
-          GetBuilder<CategoryController>(builder: (cont) {
-            return Visibility(
-              visible: cont.categories.isNotEmpty,
-              child: Seprator(
-                title: "Categories",
-                onPressed: () => Get.to(() => const CategoriesView()),
+    return GetBuilder<HomeController>(builder: (controller) {
+      return Scaffold(
+        key: controller.scaffoldKey,
+        drawer: AppDrawer(),
+        appBar: AppBar(
+          title: Text(
+            "Mutualis App",
+            style: TextStyle(color: Theme.of(context).hoverColor),
+          ),
+          elevation: 0,
+          backgroundColor: Theme.of(context).cardColor,
+          leading: Builder(
+            builder: (context) => // Ensure Scaffold is in context
+                IconButton(
+              icon: const Icon(
+                Icons.blur_on,
+                size: 30,
               ),
-            );
-          }),
-          SizedBox(
-            width: double.infinity,
-            height: Get.height / 4,
-            child: GetBuilder<CategoryController>(
-              builder: (cont) {
-                if (cont.isLoadingCategory) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (cont.categories.isEmpty) {
-                  return const Center(
-                    child: Text("No Categories"),
-                  );
-                } else {
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: cont.categories.length,
-                    itemBuilder: (context, index) =>
-                        CategoryCard(category: cont.categories[index]),
-                  );
-                }
-              },
+              color: Colors.black,
+              onPressed: () => controller.openDrawer(),
             ),
           ),
-          GetBuilder<CategoryController>(builder: (cont) {
-            return Visibility(
-              visible: cont.categories.isNotEmpty,
-              child: Seprator(
-                title: "Doctors",
-                onPressed: () => Get.to(() => const CategoriesView()),
-              ),
-            );
-          }),
-            StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection("Users")
-                .where("isDoctor", isEqualTo: true)
-                //.limit(5)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(kPrimaryColor)),
-                );
-              } else {
-             
-               // doctorDataList = snapshot.data.documents;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.all(10.0),
-                  itemBuilder: (context, int index) {
-                    //log(snapshot.data!.docs[index].data().toString());
-                    var data=jsonEncode(snapshot.data!.docs[index].data());
-                    final decodedData=jsonDecode(data);
-                   DoctorModel doctor = DoctorModel.fromJson(decodedData);
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return DetailPage(
-                            doctor: doctor,
-                        
-                          );
-                        }));
-                      },
-                      child:  doctorTile(doctor,context),
-                    );
-                  },
-                  itemCount: snapshot.data?.docs.length,
-                  //reverse: true,
-                  //controller: listScrollController,
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
+          /*leading: Icon(
+            Icons.short_text,
+            size: 30,
+            color: Colors.black,
 
-    
+          ),*/
+          actions: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(13)),
+                child: GetBuilder<UserController>(builder: (cont) {
+                  return Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                    ),
+                    child: ExtendedImage.network(
+                        cont.user.photoUrl ?? defaultPhotoUrl,
+                        fit: BoxFit.fill),
+                  );
+                }),
+              ),
+            ),
+            // const Icon(
+            //   IconlyLight.notification,
+            //   size: 30,
+            //   color: kPrimaryColor,
+            // ),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const UserCard(),
+              GetBuilder<CategoryController>(builder: (cont) {
+                return Visibility(
+                  visible: cont.categories.isNotEmpty,
+                  child: Seprator(
+                    title:LocaleKeys.categories.tr,
+                    onPressed: () => Get.to(() => const CategoriesView()),
+                  ),
+                );
+              }),
+              SizedBox(
+                width: double.infinity,
+                height: Get.height / 4,
+                child: GetBuilder<CategoryController>(
+                  builder: (cont) {
+                    if (cont.isLoadingCategory) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (cont.categories.isEmpty) {
+                      return const Center(
+                        child: Text("No Categories"),
+                      );
+                    } else {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: cont.categories.length,
+                        itemBuilder: (context, index) =>
+                            CategoryCard(category: cont.categories[index]),
+                      );
+                    }
+                  },
+                ),
+              ),
+              GetBuilder<CategoryController>(builder: (cont) {
+                return Visibility(
+                  visible: cont.categories.isNotEmpty,
+                  child: Seprator(
+                    title:LocaleKeys.doctors.tr,
+                    onPressed: () => Get.to(() => const CategoriesView()),
+                  ),
+                );
+              }),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("Users")
+                    .where("isDoctor", isEqualTo: true)
+                    //.limit(5)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(kPrimaryColor)),
+                    );
+                  } else {
+                    // doctorDataList = snapshot.data.documents;
+                    return ListView.builder(
+                      shrinkWrap: true,
+
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(10.0),
+                      itemBuilder: (context, int index) {
+                        //log(snapshot.data!.docs[index].data().toString());
+                        var data =
+                            jsonEncode(snapshot.data!.docs[index].data());
+                        final decodedData = jsonDecode(data);
+                        DoctorModel doctor = DoctorModel.fromJson(decodedData);
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return DetailPage(
+                                doctor: doctor,
+                              );
+                            }));
+                          },
+                          child: doctorTile(doctor, context),
+                        );
+                      },
+                      itemCount: snapshot.data?.docs.length,
+                      //reverse: true,
+                      //controller: listScrollController,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
-    Widget doctorTile(DoctorModel doctor, BuildContext context)
-  {
+
+  Widget doctorTile(DoctorModel doctor, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: <BoxShadow>[
+        boxShadow: Get.isDarkMode?[]:[
           BoxShadow(
             offset: const Offset(4, 4),
             blurRadius: 10,
@@ -153,7 +210,7 @@ class Phome extends StatelessWidget {
                 color: General().randomColor(context),
               ),
               child: ExtendedImage.network(
-                doctor.photoUrl??defaultPhotoUrl,
+                doctor.photoUrl ?? defaultPhotoUrl,
                 height: 50,
                 width: 50,
                 fit: BoxFit.cover,
@@ -161,16 +218,17 @@ class Phome extends StatelessWidget {
             ),
           ),
           title: Text(
-           doctor.name ??"",
-            style: const TextStyle(fontSize: 16 * 1.2, fontWeight: FontWeight.bold),
+            doctor.name ?? "",
+            style:  TextStyle(
+                fontSize: 16 * 1.2, fontWeight: FontWeight.bold,color: Theme.of(context).hoverColor),
           ),
           subtitle: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
-              doctor.type??"",
-              style: const TextStyle(
+              doctor.type ?? "",
+              style:  TextStyle(
                   fontSize: 12 * 1.2,
-                  color: Colors.black,
+                 color: Theme.of(context).hoverColor,
                   fontWeight: FontWeight.w300),
             ),
           ),

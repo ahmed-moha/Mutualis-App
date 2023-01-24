@@ -16,7 +16,7 @@ final CategoryModel category;
       decoration: BoxDecoration(
         color: kPrimaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: <BoxShadow>[
+        boxShadow: Get.isDarkMode?[]:[
           BoxShadow(
             offset: const Offset(4, 4),
             blurRadius: 10,

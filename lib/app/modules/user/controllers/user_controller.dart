@@ -125,17 +125,20 @@ class UserController extends GetxController {
       required String email,
       required String password,
       required String catId,
-      required String about}) async {
+      required String about,
+      String? catName}) async {
     if (addDoctorKey.currentState?.validate() ?? false) {
       try {
         isDoctorLoading = true;
         update();
-        var data = await UserProvider().registerDoctor(
+         await UserProvider().registerDoctor(
             name: name,
             email: email,
             password: password,
             catId: catId,
-            about: about);
+            catName: catName??"",
+            about: about,
+            );
         Get.snackbar("Success", "Successfuly registered",
             backgroundColor: Colors.green, colorText: Colors.white);
         Get.back();

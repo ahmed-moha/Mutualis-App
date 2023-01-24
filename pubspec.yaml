@@ -36,9 +36,18 @@ dependencies:
   focused_menu: ^1.0.5
   dropdown_search: ^5.0.5
   like_button: ^2.0.5
+  url_launcher: ^6.1.8
+  flutter_local_notifications: ^13.0.0
 
 dev_dependencies: 
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: 
+  flutter_native_splash: 
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_icon.jpg"
   flutter_test: 
     sdk: flutter
 
