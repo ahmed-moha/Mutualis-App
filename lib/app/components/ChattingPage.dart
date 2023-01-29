@@ -1,4 +1,5 @@
-import 'dart:async';
+
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jbuti_app/app/components/chat_detail_page_appbar.dart';
 import 'package:jbuti_app/app/components/utils.dart';
+import 'package:jbuti_app/app/config.dart';
 import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
 import '../constants.dart';
@@ -20,25 +22,30 @@ class Chat extends StatelessWidget {
   final String receiverId;
   final String receiverAvatar;
   final String receiverName;
-
+  final String recieverToken;
+  final dynamic recieverPhone;
   final String currUserId;
   final String currUserAvatar;
   final String currUserName;
 
   const Chat({
     Key? key,
+    required this.recieverToken,
     required this.receiverId,
     required this.receiverAvatar,
     required this.receiverName,
     required this.currUserId,
     required this.currUserAvatar,
-    required this.currUserName,
+    required this.currUserName, required this.recieverPhone,
   });
 
   @override
   Widget build(BuildContext context) {
+    log(receiverName, name: "R-Name");
     return Scaffold(
       appBar: ChatDetailPageAppBar(
+        receiverPhone: recieverPhone??"",
+        recieverFcmToken: recieverToken,
         receiverName: receiverName,
         receiverAvatar: receiverAvatar,
         receiverId: receiverId,
@@ -47,6 +54,8 @@ class Chat extends StatelessWidget {
         currUserName: currUserName,
       ),
       body: ChatScreen(
+        recieverName: receiverName,
+        recieverFcmToken: recieverToken,
         receiverId: receiverId,
         receiverAvatar: receiverAvatar,
       ),
@@ -57,27 +66,32 @@ class Chat extends StatelessWidget {
 class ChatScreen extends StatefulWidget {
   final String receiverId;
   final String receiverAvatar;
+  final String recieverFcmToken;
+  final String recieverName;
   const ChatScreen({
     Key? key,
     required this.receiverId,
     required this.receiverAvatar,
+    required this.recieverFcmToken,
+    required this.recieverName,
   }) : super(key: key);
 
   @override
   State createState() => ChatScreenState(
-        receiverId: receiverId,
-        receiverAvatar: receiverAvatar,
-      );
+      receiverId: receiverId,
+      receiverAvatar: receiverAvatar,
+     );
 }
 
 class ChatScreenState extends State<ChatScreen> {
-  ChatScreenState({
-    Key? key,
-    required this.receiverId,
-    required this.receiverAvatar,
-  });
+  ChatScreenState(
+      {Key? key,
+      required this.receiverId,
+      required this.receiverAvatar,
+      });
   final String? receiverId;
   final String? receiverAvatar;
+
   TextEditingController textEditingController = TextEditingController();
   ScrollController listScrollController = ScrollController();
   FocusNode focusNode = FocusNode();
@@ -99,6 +113,7 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+    log(widget.recieverFcmToken, name: "RECIVER TOKEN");
     // TODO: implement initState
     super.initState();
     focusNode.addListener(onFocusChange);
@@ -329,7 +344,6 @@ class ChatScreenState extends State<ChatScreen> {
                         currUserId: cont.user.uid ?? "",
                         receiverAvatar: receiverAvatar ?? "",
                         context: context,
-                        
                       ),
                       itemCount: snapshot.data?.docs.length,
                       reverse: true,
@@ -413,18 +427,18 @@ class ChatScreenState extends State<ChatScreen> {
       ),
       child: Row(
         children: [
-          // Material(
-          //   color: Colors.white,
-          //   child: Container(
-          //     margin: const EdgeInsets.symmetric(horizontal: 1.0),
-          //     child: IconButton(
-          //       key: gifBtnKey,
-          //       icon: const Icon(Icons.attach_file),
-          //       color: kPrimaryColor,
-          //       onPressed: onAttachmentClick,
-          //     ),
-          //   ),
-          // ),
+          Material(
+            color: Colors.white,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 1.0),
+              child: IconButton(
+                key: gifBtnKey,
+                icon: const Icon(Icons.attach_file),
+                color: kPrimaryColor,
+                onPressed:()=> getImage(isGallery: true),
+              ),
+            ),
+          ),
           Flexible(
             child: Container(
               child: TextField(
@@ -449,8 +463,8 @@ class ChatScreenState extends State<ChatScreen> {
               child: IconButton(
                 icon: const Icon(Icons.send),
                 color: kPrimaryColor,
-                onPressed: () =>
-                    onSendMessage(textEditingController.text, MessageType.Text),
+                onPressed: () => onSendMessage(textEditingController.text,
+                    MessageType.Text, widget.recieverName),
               ),
             ),
           )
@@ -459,7 +473,9 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void onSendMessage(String contentMsg, MessageType type) {
+  void onSendMessage(String contentMsg, MessageType type, String name) {
+    log(name.toString(),name: "R-NAME 2");
+    final user=Get.find<UserController>().user;
     setState(() {
       isDisplaySticker = false;
     });
@@ -525,6 +541,11 @@ class ChatScreenState extends State<ChatScreen> {
       });
       listScrollController.animateTo(0.0,
           duration: const Duration(microseconds: 300), curve: Curves.easeOut);
+
+      // Config().sendNotification(
+      //     token: widget.recieverFcmToken, title: widget.recieverName, body: contentMsg);
+       Config().sendNotification(
+          token: widget.recieverFcmToken, title: user.name??"", body: contentMsg);
     } else {
       Fluttertoast.showToast(msg: "Empty message cannot be sent");
     }
@@ -571,7 +592,7 @@ class ChatScreenState extends State<ChatScreen> {
         imageUrl = downloadUrl;
         setState(() {
           isLoading = false;
-          onSendMessage(imageUrl, MessageType.Image);
+          onSendMessage(imageUrl, MessageType.Image, widget.recieverName);
         });
 
         return Future.value();

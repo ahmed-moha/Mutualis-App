@@ -17,7 +17,7 @@ class UserProvider extends GetConnect {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late User firebaseUser;
-  String fcmToken = "";
+
   login({required String username, required String password}) async {
     var response = await http.post(
       Uri.parse("$kEndPoint/login"),
@@ -54,14 +54,15 @@ class UserProvider extends GetConnect {
       final decodedData = jsonDecode(response.body);
 
       if (!decodedData["success"]) throw decodedData["errors"][0];
-      // print(
-      //   UserModel.fromJson(decodedData["user"]),
-      // );
+      print(
+        UserModel.fromJson(decodedData["user"]),
+      );
       var data = await saveToFirebase(
-          name: name,
-          email: email,
-          password: password,
-          userId: decodedData["user"]["id"].toString());
+        name: name,
+        email: email,
+        password: password,
+        userId: decodedData["user"]["id"].toString(),
+      );
 
       print("THE DATA IS: $data");
       await saveUser(
@@ -81,12 +82,15 @@ class UserProvider extends GetConnect {
       required String userId,
       String? desc,
       String? type,
+      String? phone,
       bool isDoctor = false}) async {
     try {
-      await messaging.getToken().then((value) {
+      String fcmToken = "";
+      await FirebaseMessaging.instance.deleteToken();
+      await FirebaseMessaging.instance.getToken().then((value) {
         fcmToken = value ?? "";
       }).catchError((e) => throw e);
-
+      log(fcmToken, name: "THE TOKEN");
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((auth) {
@@ -103,6 +107,7 @@ class UserProvider extends GetConnect {
       if (documents.isEmpty) {
         if (isDoctor == true) {
           log("true");
+          String number=phone!.substring(1);
           await FirebaseFirestore.instance
               .collection("Users")
               .doc(firebaseUser.uid)
@@ -113,6 +118,7 @@ class UserProvider extends GetConnect {
             "name": name,
             "photoUrl": defaultPhotoUrl,
             "isDoctor": isDoctor,
+            "phone": number,
             "isAdmin": false,
             "type": type ?? "",
             "description": desc ?? "",
@@ -130,6 +136,7 @@ class UserProvider extends GetConnect {
             "photoUrl": defaultPhotoUrl,
             "isDoctor": isDoctor,
             "isAdmin": false,
+            "phone": number,
             "type": type ?? "",
             "description": desc ?? "",
             "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
@@ -221,7 +228,9 @@ class UserProvider extends GetConnect {
     required String password,
   }) async {
     var decodedData;
+    String fcmToken = "";
     try {
+      await FirebaseMessaging.instance.deleteToken();
       await messaging.getToken().then((value) {
         fcmToken = value ?? "";
       }).catchError((e) => throw e);
@@ -262,9 +271,9 @@ class UserProvider extends GetConnect {
       required String password,
       required String catId,
       required String catName,
-      required String about}) async {
-
-        print("CALLED");
+      required String about,
+      required String phone}) async {
+    print("CALLED");
     var response = await http.post(
       Uri.parse("$kEndPoint/register-doctor"),
       body: {
@@ -285,10 +294,11 @@ class UserProvider extends GetConnect {
         userId: decodedData["user"]["id"].toString(),
         isDoctor: true,
         desc: about,
-        type: catName
+        type: catName,
+        phone: phone,
       );
       Get.back();
-    }else{
+    } else {
       throw response.body;
     }
   }

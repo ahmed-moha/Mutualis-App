@@ -11,6 +11,7 @@ class DoctorModel {
   String? fcmToken;
   int? state;
   int? lastSeen;
+  String? phone;
 
   DoctorModel(
       {this.description,
@@ -24,10 +25,11 @@ class DoctorModel {
       this.id,
       this.fcmToken,
       this.state,
-      this.lastSeen});
+      this.lastSeen,this.phone});
 
   DoctorModel.fromJson(Map<String, dynamic> json) {
     description = json['description'];
+    phone=json['phone']??"";
     isAdmin = json['isAdmin'];
     type = json['type'];
     createdAt = int.parse(json['createdAt'].toString());
@@ -55,6 +57,7 @@ class DoctorModel {
     data['fcmToken'] = fcmToken;
     data['state'] = state;
     data['last_seen'] = lastSeen;
+    data['phone']=phone;
     return data;
   }
 }

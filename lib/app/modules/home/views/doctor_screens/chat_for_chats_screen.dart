@@ -82,12 +82,15 @@ class _ChatChatsScreenState extends State<ChatChatsScreen> {
               final decodedData=jsonDecode(data);
               return InkWell(
                 onTap: () {
+                  print(decodedData["phone"] );
                   // print(widget.data["content"]);
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return Chat(
-                      receiverId: decodedData["uid"],
-                      receiverAvatar: decodedData["photoUrl"],
-                      receiverName: decodedData["name"],
+                      recieverPhone: decodedData["phone"] ?? "",
+                      recieverToken: decodedData["fcmToken"]??"",
+                      receiverId: decodedData["uid"]??"",
+                      receiverAvatar: decodedData["photoUrl"]??"",
+                      receiverName: decodedData["name"]??"",
                       currUserId: cont.user.uid??"",
                       currUserName: cont.user.name??"",
                       currUserAvatar: cont.user.photoUrl??"",

@@ -11,8 +11,10 @@ class ChatUsersList extends StatefulWidget {
   final String name;
   // final String secondaryText;
   final String image;
+  final String fcmToken;
   final String time;
   final bool isMessageRead;
+  final String? phone;
   final String userId;
   final String email;
   // final String screen;
@@ -24,7 +26,7 @@ class ChatUsersList extends StatefulWidget {
       required this.isMessageRead,
       required this.email,
       // @required this.screen,
-      required this.userId});
+      required this.userId, required this.fcmToken,  this.phone});
   @override
   _ChatUsersListState createState() => _ChatUsersListState();
 }
@@ -59,7 +61,9 @@ class _ChatUsersListState extends State<ChatUsersList> {
           return GetBuilder<UserController>(
             builder: (cont) {
               return Chat(
+                recieverPhone: widget.phone,
                 receiverId: widget.userId,
+                recieverToken: widget.fcmToken,
                 receiverAvatar: widget.image,
                 receiverName: widget.name,
                 currUserId: cont.user.uid??"",
@@ -72,6 +76,11 @@ class _ChatUsersListState extends State<ChatUsersList> {
       },
       child: Container(
         padding: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+        margin: const EdgeInsets.all(8),
+        decoration:  BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12)
+        ),
         child: Row(
           children: <Widget>[
             Expanded(

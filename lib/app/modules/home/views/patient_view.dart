@@ -122,7 +122,7 @@ class Phome extends StatelessWidget {
                   visible: cont.categories.isNotEmpty,
                   child: Seprator(
                     title:LocaleKeys.doctors.tr,
-                    onPressed: () => Get.to(() => const CategoriesView()),
+                    onPressed: () {},
                   ),
                 );
               }),

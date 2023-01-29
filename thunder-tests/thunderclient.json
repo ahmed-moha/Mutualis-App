@@ -140,7 +140,7 @@
     "method": "POST",
     "sortNum": 100000,
     "created": "2023-01-24T12:55:23.088Z",
-    "modified": "2023-01-24T13:41:49.454Z",
+    "modified": "2023-01-28T09:00:43.856Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -154,7 +154,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"notification\": {\n    \"title\": \"HELLO GUYS\",\n    \"body\": \"Maxaa haysaan\"\n  },\n  \"data\": {\n    \"page\": \"requestPage\",\n    \"group_id\": \"123\",\n    \"click_action\": \"FLUTTER_NOTIFICATION_CLICK\"\n  },\n  \"to\": \"cdLy1LxxSZSd749bGndgTn:APA91bG-XGaWkq7BKOdq1p2VMBJnyLJ65sVmHIBkDsV3Bk-IsjCR_gP7F183b712IK0ZBYBWIFDi_mPUaseEgGE2O3SIp699-APoqI4oyAduj9RTojIepgidnzJLId5Ms3BebiU8CjvS\"\n}",
+      "raw": "{\n  \"notification\": {\n    \"title\": \"HELLO \",\n    \"body\": \"Testing notification\"\n  },\n  \"data\": {\n    \"page\": \"requestPage\",\n    \"group_id\": \"123\",\n    \"click_action\": \"FLUTTER_NOTIFICATION_CLICK\"\n  },\n  \"to\": \"cazte17pS8WvyMv2LcnnI_:APA91bFDGhNkMcsyyhSvwii51w-Ti1Hc49OAk2CVntZtvDSp_V5ZvUjK3VfUcGkfvXmpU-BILaBipVaAZoGw1TVTRDh7glPTNVTYJsQYTW_O_H-PHtzKm4C56j5VkkVOYacXxjT1D2PS\"\n}",
       "form": []
     },
     "tests": []

@@ -38,6 +38,8 @@ dependencies:
   like_button: ^2.0.5
   url_launcher: ^6.1.8
   flutter_local_notifications: ^13.0.0
+  intl_phone_number_input: ^0.7.2
+  jiffy: ^5.0.0
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

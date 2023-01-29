@@ -49,6 +49,14 @@ class LocaleKeys {
   static const submit = 'submit';
   static const my_ambulances = 'my_ambulances';
   static const on_the_way = 'on_the_way';
+  static const email = 'email';
+  static const password = 'password';
+  static const login = 'login';
+  static const dont_have_an_account = 'dont_have_an_account';
+  static const create_one = 'create_one';
+  static const forgot_password = 'forgot_password';
+  static const name = 'name';
+  static const i_have_an_Account = 'i_have_an_Account';
 }
 
 class Locales {
@@ -90,6 +98,14 @@ class Locales {
     'submit': 'Submit',
     'my_ambulances': 'My Ambulances',
     'on_the_way': 'On the way',
+    'email': 'Email',
+    'password': 'Password',
+    'login': 'Login',
+    'dont_have_an_account': 'Don\'t have an account',
+    'create_one': 'Create one',
+    'forgot_password': 'Forgot Password',
+    'name': 'Name',
+    'i_have_an_Account': 'I have an account',
   };
   static const fr_FR = {
     'my_account': 'My Account',
@@ -129,6 +145,14 @@ class Locales {
     'submit': 'Nous faire parvenir',
     'my_ambulances': 'Mes demandes d\'ambulances',
     'on_the_way': 'En route',
+    'email': 'Email',
+    'password': 'le mot de passe',
+    'login': 'connexion',
+    'dont_have_an_account': 'Je n\'ai pas de compte',
+    'create_one': 'Créer une',
+    'forgot_password': 'Mot de passe oublié',
+    'name': 'Name',
+    'i_have_an_Account': 'J\'ai un compte',
   };
   static const so_SO = {
     'my_account': 'My Account',
@@ -168,5 +192,13 @@ class Locales {
     'submit': 'Xareey',
     'my_ambulances': 'Amblus-keega',
     'on_the_way': 'Jidka kusoo jira',
+    'email': 'Email',
+    'password': 'Number-sireed',
+    'login': 'Login',
+    'dont_have_an_account': 'Malihi cinwaan',
+    'create_one': 'Sameeso mid',
+    'forgot_password': 'Ilaaway Password',
+    'name': 'Magac',
+    'i_have_an_Account': 'Cinwaan hore lahaa',
   };
 }

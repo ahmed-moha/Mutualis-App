@@ -11,6 +11,7 @@ import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:like_button/like_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../generated/locales.g.dart';
 import '../../../components/ChattingPage.dart';
@@ -156,8 +157,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle titleStyle =
-         TextStyle(fontSize: 25, fontWeight: FontWeight.bold,color: Theme.of(context).hoverColor);
+    TextStyle titleStyle = TextStyle(
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).hoverColor);
 
     return Scaffold(
       //backgroundColor: LightColor.extraLightBlue,
@@ -192,11 +195,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       left: 19,
                       right: 19,
                       top: 16), //symmetric(horizontal: 19, vertical: 16),
-                  decoration:  BoxDecoration(
+                  decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(30),
                         topRight: Radius.circular(30)),
-                    color:  Theme.of(context).cardColor,
+                    color: Theme.of(context).cardColor,
                   ),
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -212,7 +215,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               Text(
                                 widget.doctor.name ?? "",
                                 style: titleStyle,
-                                
                               ),
                               const SizedBox(
                                 width: 10,
@@ -255,8 +257,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         Text(
                           widget.doctor.description ?? '',
-                          style:  TextStyle(
-                              fontSize: 12, color: Theme.of(context).hoverColor),
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).hoverColor),
                         ),
                         const SizedBox(
                           height: 25,
@@ -267,7 +270,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               image: AssetImage("assets/images/waafi.png"),
                               width: 50,
                             ),
-                            SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text(
                               "Payer la téléconsultation par Waafi au : 3152",
                               style: TextStyle(
@@ -276,14 +281,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             )
                           ],
                         ),
-                        const SizedBox(height: 8,),
+                        const SizedBox(
+                          height: 8,
+                        ),
                         Row(
                           children: const [
                             Image(
                               image: AssetImage("assets/images/dmoney.png"),
                               width: 50,
                             ),
-                               SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text(
                               "Payer la téléconsultation par DMoney",
                               style: TextStyle(
@@ -306,16 +315,63 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Container(
-              margin: const EdgeInsets.all(5),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(8)),
-              child: const Icon(
-                IconlyBold.call,
-                color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text(
+                      "How do you want to contact the DR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 35,
+                            backgroundImage: ExtendedNetworkImageProvider(
+                                widget.doctor.photoUrl ?? defaultPhotoUrl),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            widget.doctor.name ?? "",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () =>callPhone(number: widget.doctor.phone??""),
+                        child: const Text(
+                          "Call",
+                          style: TextStyle(color: kPrimaryColor),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () =>launchWhatsApp(widget.doctor.phone??""),
+                        child: const Text("What's App Call",
+                            style: TextStyle(color: Colors.green)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.all(5),
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(8)),
+                child: const Icon(
+                  IconlyBold.call,
+                  color: Colors.white,
+                ),
               ),
             ),
             GestureDetector(
@@ -323,6 +379,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 if (widget.availableAbonnement) {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return Chat(
+                      recieverPhone: widget.doctor.phone??"",
+                      recieverToken: widget.doctor.fcmToken ?? "",
                       receiverId: widget.doctor.uid ?? "",
                       receiverAvatar: widget.doctor.photoUrl ?? "",
                       receiverName: widget.doctor.name ?? "",
@@ -391,5 +449,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
       ),
     );
+  }
+
+  void callPhone({required String number}) async {
+    var phone = 'tel:$number';
+    if (await canLaunchUrl(Uri.parse(phone))) {
+      await launchUrl(Uri.parse(phone));
+    } else {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: Text('We couldn\'t call this phone. $number'),
+        ),
+      );
+    }
+  }
+
+  void launchWhatsApp(String number) async {
+    try {
+      //String phoneNumber = '252615868999';
+      String message = 'Assalamu alaykum!';
+      var whatsappUrl = "whatsapp://send?phone=$number&text=$message";
+      if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+        await launchUrl(Uri.parse(whatsappUrl));
+      } else {
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          const SnackBar(
+              content: Text('Whatsapp is not installed in this phone!')),
+        );
+      }
+    } catch (e) {
+      print('on what\'s app ERROR:$e');
+    }
   }
 }

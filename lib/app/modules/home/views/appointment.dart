@@ -514,8 +514,8 @@ class MapScreenState extends State<AppointmentPage>
                                                   BorderRadius.circular(60),
                                             ),
                                             filled: true,
-                                            fillColor:
-                                             Theme.of(context).cardColor,
+                                            fillColor:Colors.black.withOpacity(0.05),
+                                             
                                             contentPadding:
                                                 const EdgeInsets.symmetric(
                                               vertical: 20.0,

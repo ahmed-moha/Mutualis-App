@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:jbuti_app/app/constants.dart';
 import 'package:jbuti_app/app/modules/user/views/register_view.dart';
+import 'package:jbuti_app/generated/locales.g.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../controllers/user_controller.dart';
@@ -79,15 +80,15 @@ class UserView extends GetView<UserController> {
                           right: 20.0,
                         ),
                         width: double.infinity,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                        decoration:  BoxDecoration(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(25),
                             topRight: Radius.circular(25),
                             bottomLeft: Radius.circular(25),
                             bottomRight: Radius.circular(25),
                           ),
-                          color: Color(0xFFFFFFFF),
-                          boxShadow: [
+                          color: Theme.of(context).cardColor,
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black12,
                               blurRadius: 50.0,
@@ -110,7 +111,7 @@ class UserView extends GetView<UserController> {
                                 controller: cont.email,
                                 textCapitalization: TextCapitalization.none,
                                 decoration: InputDecoration(
-                                  hintText: 'Email',
+                                  hintText: LocaleKeys.email.tr,
                                   hintStyle: const TextStyle(
                                     color: Color(0xFFb1b2c4),
                                   ),
@@ -151,7 +152,7 @@ class UserView extends GetView<UserController> {
                                 //controller: passwordTextEditingController,
                                 obscureText: cont.isVisiblePassword,
                                 decoration: InputDecoration(
-                                    hintText: 'Password',
+                                    hintText: LocaleKeys.password.tr,
                                     hintStyle: const TextStyle(
                                       color: Color(0xFFb1b2c4),
                                     ),
@@ -217,9 +218,9 @@ class UserView extends GetView<UserController> {
                               color: Colors.white,
                               strokeWidth: 2,
                             )
-                          : const Text(
-                              'Login',
-                              style: TextStyle(
+                          :  Text(
+                              LocaleKeys.login.tr,
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                     ),
@@ -236,13 +237,13 @@ class UserView extends GetView<UserController> {
                       padding: const EdgeInsets.all(20),
                       child: RichText(
                         text: TextSpan(
-                            text: "Don't have an account?",
+                            text: LocaleKeys.dont_have_an_account.tr,
                             style:
                                 TextStyle(color: Theme.of(context).hoverColor),
-                            children: const [
+                            children:  [
                               TextSpan(
-                                  text: " Create one",
-                                  style: TextStyle(color: kPrimaryColor))
+                                  text: " ${LocaleKeys.create_one.tr}",
+                                  style: const TextStyle(color: kPrimaryColor))
                             ]),
                       ),
                     ),
@@ -259,9 +260,9 @@ class UserView extends GetView<UserController> {
                     child: Padding(
                       padding: const EdgeInsets.all(20),
                       child: RichText(
-                        text: const TextSpan(
-                          text: "Forgot Password?",
-                          style: TextStyle(color: kPrimaryColor),
+                        text:  TextSpan(
+                          text: "${LocaleKeys.forgot_password.tr}?",
+                          style: const TextStyle(color: kPrimaryColor),
                         ),
                       ),
                     ),

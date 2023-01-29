@@ -34,6 +34,14 @@
     "appointment_hour":"Heure de rendez-vous",
     "submit":"Nous faire parvenir",
     "my_ambulances":"Mes demandes d'ambulances",
-    "on_the_way":"En route"
+    "on_the_way":"En route",
+    "email":"Email",
+    "password":"le mot de passe",
+    "login":"connexion",
+    "dont_have_an_account":"Je n'ai pas de compte",
+    "create_one":"Créer une",
+    "forgot_password":"Mot de passe oublié",
+    "name":"Name",
+    "i_have_an_Account":"J'ai un compte"
   
 }

@@ -12,8 +12,10 @@ class ChatUsersList extends StatefulWidget {
   // final String secondaryText;
   final String image;
   final String time;
+  final String phone;
   final bool isMessageRead;
   final String userId;
+  final String fcmToken;
   final String email;
   // final String screen;
   const ChatUsersList(
@@ -24,7 +26,7 @@ class ChatUsersList extends StatefulWidget {
       required this.isMessageRead,
       required this.email,
       // @required this.screen,
-      required this.userId});
+      required this.userId, required this.fcmToken, required this.phone});
   @override
   _ChatUsersListState createState() => _ChatUsersListState();
 }
@@ -59,6 +61,8 @@ class _ChatUsersListState extends State<ChatUsersList> {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return Chat(
+                recieverPhone: widget.phone,
+                recieverToken: widget.fcmToken,
                 receiverId: widget.userId,
                 receiverAvatar: widget.image,
                 receiverName: widget.name,

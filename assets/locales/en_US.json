@@ -34,7 +34,17 @@
     "appointment_hour":"Appointment hour",
     "submit":"Submit",
     "my_ambulances":"My Ambulances",
-    "on_the_way":"On the way"
+    "on_the_way":"On the way",
+    "email":"Email",
+    "password":"Password",
+    "login":"Login",
+    "dont_have_an_account":"Don't have an account",
+    "create_one":"Create one",
+    "forgot_password":"Forgot Password",
+    "name":"Name",
+    "i_have_an_Account":"I have an account"
+    
+
 
 
 

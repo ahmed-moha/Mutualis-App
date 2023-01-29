@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import "package:intl/intl.dart";
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -38,6 +38,7 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
 
   @override
   void initState() {
+    
     //_loadUser();
     super.initState();
   }
@@ -116,6 +117,7 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
 
   Widget AppointmentWidget(String dateRdv, String heureRdv, String createdAt,
       String doctorName, String statut) {
+        String date=DateFormat.yMMMMEEEEd().format(DateTime.parse(createdAt));
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Card(
@@ -131,7 +133,7 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10.0, vertical: 5.0),
                   color: statut == "0" ? Colors.yellow : Colors.green,
-                  child: Text(statut == "0" ? "A Venir" : "Déjà effectué",
+                  child: Text(statut == "0" ? "coming" : "Already done",
                       style: const TextStyle(
                           //color: Colors.white,
                           fontSize: 14.0,
@@ -145,7 +147,7 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("RDV avec $doctorName", style:  TextStyle( color: Theme.of(context).hoverColor))
+                          Text("Appointment with $doctorName", style:  TextStyle( color: Theme.of(context).hoverColor))
                           //new Text(startStation)
                         ],
                       ),
@@ -163,11 +165,12 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
                             ),
                             Text("Date : $dateRdv",style:  TextStyle( color: Theme.of(context).hoverColor)),
                           ]),
+                          const SizedBox(height: 5,),
                           Row(
                             children: <Widget>[
                               const Icon(Icons.lock_clock,
                                   color: kPrimaryColor, size: 16),
-                              Text("Heure : $heureRdv",style:  TextStyle( color: Theme.of(context).hoverColor))
+                              Text("hour : $heureRdv",style:  TextStyle( color: Theme.of(context).hoverColor))
                             ],
                           )
                         ],
@@ -177,7 +180,7 @@ class MyAppointmentsPageState extends State<MyAppointmentsPage> {
                       ),
                       Align(
                           alignment: Alignment.bottomRight,
-                          child: Text("RDV demandé le $createdAt",style:  TextStyle( color: Theme.of(context).hoverColor)))
+                          child: Text("Appointment requested on \n$date",style:  const TextStyle( color: kPrimaryColor)))
                     ],
                   ),
                 ),

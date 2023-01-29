@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:jbuti_app/app/modules/category/controllers/category_controller.dart';
 import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 
@@ -24,13 +25,15 @@ class AddDoctorPageState extends State<AddDoctorPage>
       "https://d3n8a8pro7vhmx.cloudfront.net/imaginebetter/pages/313/meta_images/original/blank-profile-picture-973460_1280.png";
   TextEditingController nameEditingController = TextEditingController();
   TextEditingController emailEditingController = TextEditingController();
+  TextEditingController phoneEditingController = TextEditingController();
   TextEditingController aboutEditingController = TextEditingController();
   TextEditingController specialiteEditingController = TextEditingController();
   TextEditingController passwordEditingController = TextEditingController();
   TextEditingController cpasswordEditingController = TextEditingController();
-
+  PhoneNumber number = PhoneNumber(isoCode: 'SO');
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   String fcmToken = "";
+  String phoneValue = "";
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String dropdownValue = 'Pédiatrie';
@@ -234,7 +237,7 @@ class AddDoctorPageState extends State<AddDoctorPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Nom et prénoms",
+                        "Name",
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
@@ -253,7 +256,7 @@ class AddDoctorPageState extends State<AddDoctorPage>
                         height: 20,
                       ),
                       const Text(
-                        'Adresse email',
+                        'E-mail',
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
@@ -267,7 +270,59 @@ class AddDoctorPageState extends State<AddDoctorPage>
                           controller: emailEditingController,
                           decoration: const InputDecoration(hintText: "Email")),
                       const SizedBox(
-                        height: 20,
+                        height: 30,
+                      ),
+                      const Text(
+                        'Phone',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      Container(
+                        //margin: const EdgeInsets.symmetric(horizontal: 30),
+                        padding: const EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          //color: Get.theme.cardColor,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: InternationalPhoneNumberInput(
+                          textFieldController: phoneEditingController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Number is required'.tr;
+                            }
+                            return null;
+                          },
+                          onInputChanged: (PhoneNumber number) {
+                            phoneValue = number.phoneNumber.toString();
+                            setState(() {});
+                          },
+                          inputDecoration: const InputDecoration(
+                              // border: InputBorder.none,
+                              hintText: 'Your Number',
+                              hintStyle: TextStyle(fontSize: 12.0)),
+                          onInputValidated: (bool value) {},
+                          selectorConfig: const SelectorConfig(
+                              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                              leadingPadding: 8.0,
+                              trailingSpace: false,
+                              setSelectorButtonAsPrefixIcon: true),
+                          ignoreBlank: true,
+                          autoValidateMode: AutovalidateMode.disabled,
+                          selectorTextStyle:
+                              TextStyle(color: Get.theme.hoverColor),
+                          initialValue: number,
+                          formatInput: true,
+                          maxLength: 10,
+                          scrollPadding: const EdgeInsets.all(8.0),
+                          spaceBetweenSelectorAndTextField: 0,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
+                          inputBorder: const OutlineInputBorder(),
+                          onSaved: (PhoneNumber number) {},
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 45,
                       ),
                       const Text(
                         'Spécialité du docteur',
@@ -458,7 +513,8 @@ class AddDoctorPageState extends State<AddDoctorPage>
                                       password: passwordEditingController.text,
                                       catId: categorieId.toString(),
                                       catName: categorieLabel,
-                                      about: aboutEditingController.text),
+                                      about: aboutEditingController.text,
+                                      phone: phoneValue),
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),

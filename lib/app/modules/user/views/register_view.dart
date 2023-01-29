@@ -6,6 +6,7 @@ import 'package:iconly/iconly.dart';
 import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
+import '../../../../generated/locales.g.dart';
 import '../../../constants.dart';
 
 class RegisterView extends GetView {
@@ -85,15 +86,15 @@ class RegisterView extends GetView {
                           right: 20.0,
                         ),
                         width: double.infinity,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
+                        decoration:  BoxDecoration(
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(25),
                             topRight: Radius.circular(25),
                             bottomLeft: Radius.circular(25),
                             bottomRight: Radius.circular(25),
                           ),
-                          color: Color(0xFFFFFFFF),
-                          boxShadow: [
+                          color: Theme.of(context).cardColor,
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.black12,
                               blurRadius: 50.0,
@@ -120,7 +121,7 @@ class RegisterView extends GetView {
                                 controller: cont.rName,
                                 textCapitalization: TextCapitalization.none,
                                 decoration: InputDecoration(
-                                  hintText: 'Name',
+                                  hintText: LocaleKeys.name.tr,
                                   hintStyle: const TextStyle(
                                     color: Color(0xFFb1b2c4),
                                   ),
@@ -156,7 +157,7 @@ class RegisterView extends GetView {
                                 controller: cont.rEmail,
                                 textCapitalization: TextCapitalization.none,
                                 decoration: InputDecoration(
-                                  hintText: 'Email',
+                                  hintText: LocaleKeys.email.tr,
                                   hintStyle: const TextStyle(
                                     color: Color(0xFFb1b2c4),
                                   ),
@@ -197,7 +198,7 @@ class RegisterView extends GetView {
                                 //controller: passwordTextEditingController,
                                 obscureText: cont.isVisiblePassword,
                                 decoration: InputDecoration(
-                                    hintText: 'Password',
+                                    hintText: LocaleKeys.password.tr,
                                     hintStyle: const TextStyle(
                                       color: Color(0xFFb1b2c4),
                                     ),
@@ -263,9 +264,9 @@ class RegisterView extends GetView {
                               color: Colors.white,
                               strokeWidth: 2,
                             )
-                          : const Text(
-                              'Submit',
-                              style: TextStyle(
+                          :  Text(
+                         LocaleKeys.submit.tr,
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                     ),
@@ -282,13 +283,13 @@ class RegisterView extends GetView {
                       padding: const EdgeInsets.all(20),
                       child: RichText(
                         text: TextSpan(
-                            text: "I have an account?",
+                            text: "${LocaleKeys.i_have_an_Account.tr}?",
                             style:
                                 TextStyle(color: Theme.of(context).hoverColor),
-                            children: const [
+                            children:  [
                               TextSpan(
-                                  text: " Login",
-                                  style: TextStyle(color: kPrimaryColor))
+                                  text: LocaleKeys.login.tr,
+                                  style: const TextStyle(color: kPrimaryColor))
                             ]),
                       ),
                     ),
