@@ -40,6 +40,9 @@ dependencies:
   flutter_local_notifications: ^13.0.0
   intl_phone_number_input: ^0.7.2
   jiffy: ^5.0.0
+  location: ^4.4.0
+
+  geocoding: ^2.0.5
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
 import 'package:jbuti_app/app/modules/user/controllers/user_controller.dart';
+import 'package:location/location.dart';
 import '../../../constants.dart';
 import 'ambulances_enquire_list.dart';
 
@@ -45,6 +47,50 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
   String? _hour, _minute, _time;
 
   TimeOfDay selectedTime = const TimeOfDay(hour: 00, minute: 00);
+  Location location = Location();
+  late LocationData locationData;
+  List<geo.Placemark> placemarks = [];
+  var adressName = "";
+  bool isLoading = false;
+  getLocation() async {
+    try {
+      isLoading = true;
+      setState(() {});
+      bool isServiceEnabled = await location.serviceEnabled();
+      if (!isServiceEnabled) {
+        isServiceEnabled = await location.requestService();
+        print("IS ENABLED: $isServiceEnabled");
+        if (!isServiceEnabled) {
+          return;
+        } else {
+          locationData = await location.getLocation();
+        }
+      }
+
+      var permissionGranted = await location.hasPermission();
+      if (permissionGranted == PermissionStatus.denied) {
+        permissionGranted = await location.requestPermission();
+        if (permissionGranted != PermissionStatus.granted) {
+          return;
+        } else {
+          locationData = await location.getLocation();
+        }
+      }
+      locationData = await location.getLocation();
+
+      setState(() {});
+      log("Long: ${locationData.longitude}  Lat: ${locationData.latitude}");
+      placemarks = await geo.placemarkFromCoordinates(
+          locationData.latitude ?? 0.0, locationData.longitude ?? 0.0);
+      log("ADDRESS: ${placemarks.first.name}", name: "ADDRESS");
+      dateEditingController.text="${placemarks.first.name}-${placemarks.first.street}";
+      log("THE DATA IS: ${dateEditingController.text}");
+    } catch (e) {
+      log(e.toString(), name: "Get Location Error");
+    }
+    isLoading = false;
+      setState(() {});
+  }
 
   Future<void> _selectTime(BuildContext context) async {
     TimeOfDay? picked =
@@ -76,6 +122,8 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
     ambulance_id = widget.ambulance_id;
     ambulance_name = widget.ambulance_name;
     // _loadUser();
+
+    getLocation();
     super.initState();
   }
 
@@ -184,6 +232,7 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
 
   @override
   Widget build(BuildContext context) {
+    //log("ADDRESS2:${placemarks.first.name}-${placemarks.first.street}", name: "ADDRESS");
     return Scaffold(
       appBar: _appbar(),
       body: ListView(
@@ -278,9 +327,10 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
                                           //       ?
                                           //       : null;
                                           // },
+                                          readOnly: true,
                                           controller: dateEditingController,
                                           decoration: InputDecoration(
-                                            hintText: 'Adresse',
+                                            hintText:isLoading?"Loading...": 'Adresse',
                                             hintStyle: const TextStyle(
                                               color: Color(0xFFb1b2c4),
                                             ),

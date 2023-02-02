@@ -22,7 +22,7 @@ class Config {
       ],
     );
    try{
-    await FirebaseMessaging.instance.subscribeToTopic("mutualis");
+    //await FirebaseMessaging.instance.subscribeToTopic("mutualis");
    }catch(e){
     log(e.toString(),name: "Subscription error");
    }

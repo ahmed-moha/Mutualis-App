@@ -57,6 +57,7 @@ class LocaleKeys {
   static const forgot_password = 'forgot_password';
   static const name = 'name';
   static const i_have_an_Account = 'i_have_an_Account';
+  static const french = 'french';
 }
 
 class Locales {
@@ -106,6 +107,7 @@ class Locales {
     'forgot_password': 'Forgot Password',
     'name': 'Name',
     'i_have_an_Account': 'I have an account',
+    'french': 'French',
   };
   static const fr_FR = {
     'my_account': 'My Account',
@@ -113,6 +115,7 @@ class Locales {
     'english': 'Anglaise',
     'somali': 'Somali',
     'arabic': 'Arabe',
+    'french': 'French',
     'home': 'Home',
     'my_appointments': 'mes rendez-vous',
     'my_files': 'Mes dossiers',
@@ -200,5 +203,6 @@ class Locales {
     'forgot_password': 'Ilaaway Password',
     'name': 'Magac',
     'i_have_an_Account': 'Cinwaan hore lahaa',
+    'french': 'Fransiis',
   };
 }

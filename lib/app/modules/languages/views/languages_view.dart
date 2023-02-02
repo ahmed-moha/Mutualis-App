@@ -51,8 +51,8 @@ class LanguagesView extends GetView<LanguagesController> {
             Obx(
               () => LanguageChoiceTile(
                 language: LanguageModel(
-                  icon: 'assets/icons/sa.svg',
-                  title: LocaleKeys.arabic.tr,
+                  icon: 'assets/icons/fr.svg',
+                  title: LocaleKeys.french.tr,
                   locale: const Locale('fr', 'FR'),
                 ),
                 selected: controller.selectedLanguage.value == Languages.arabic,

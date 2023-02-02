@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:jbuti_app/app/constants.dart';
+import 'package:jbuti_app/app/modules/user/views/forgot/reset_password.dart';
 import 'package:jbuti_app/app/modules/user/views/register_view.dart';
 import 'package:jbuti_app/generated/locales.g.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -266,7 +267,7 @@ class UserView extends GetView<UserController> {
                         ),
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () =>Get.to(()=>ResetPasswordScreen()),
                   ),
                 ),
               ],

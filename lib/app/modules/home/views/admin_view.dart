@@ -106,7 +106,7 @@ class AdminScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         //log(snapshot.data?.docs[index].toString(),name: "ALL DATA");
                         return ChatUsersList(
-                          phone:snapshot.data?.docs[index]["phone"] ?? "",
+                         // phone:snapshot.data?.docs[index]["phone"]==null? "":snapshot.data?.docs[index]["phone"] ?? "",
                           fcmToken:
                               snapshot.data?.docs[index]["fcmToken"] ?? "",
                           name: snapshot.data?.docs[index]["name"] ?? "",
