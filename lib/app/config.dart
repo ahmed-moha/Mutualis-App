@@ -101,7 +101,7 @@ class Config {
                 channelDescription: channel.description,
                 importance: Importance.max,
                 priority: Priority.high,
-                icon: '@mipmap/ic_launcher',
+                icon: android?.smallIcon,
                 // other properties...
               ),
             ),

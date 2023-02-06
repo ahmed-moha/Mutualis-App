@@ -312,7 +312,7 @@ class AddDoctorPageState extends State<AddDoctorPage>
                               TextStyle(color: Get.theme.hoverColor),
                           initialValue: number,
                           formatInput: true,
-                          maxLength: 10,
+                          maxLength: 11,
                           scrollPadding: const EdgeInsets.all(8.0),
                           spaceBetweenSelectorAndTextField: 0,
                           keyboardType: const TextInputType.numberWithOptions(

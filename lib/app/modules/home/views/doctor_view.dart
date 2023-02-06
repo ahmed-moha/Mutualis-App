@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import "../views/doctor_screens/settings/AccountSettingsPage.dart" as account;
 import 'doctor_screens/Chats.dart';
-import 'doctor_screens/UserList.dart';
 
 class DoctorView extends StatefulWidget {
   const DoctorView({
@@ -99,7 +98,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     //const Text("Chat Page"),
     //const Text("User List"),
 
-    UserList(),
+   // UserList(),
     // const Text("Log Screen"),
     // LogScreen(),
     //  const Text("Settings"),
@@ -133,7 +132,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.messenger), label: "Chats"),
-        BottomNavigationBarItem(icon: Icon(Icons.people), label: "Patients"),
+       // BottomNavigationBarItem(icon: Icon(Icons.people), label: "Patients"),
         // BottomNavigationBarItem(icon: Icon(Icons.call), label: "Calls"),
         BottomNavigationBarItem(
             icon: Icon(Icons.person_outline), label: "Profil"),

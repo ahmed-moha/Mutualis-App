@@ -327,7 +327,7 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
                                           //       ?
                                           //       : null;
                                           // },
-                                          readOnly: true,
+                                          readOnly: isLoading,
                                           controller: dateEditingController,
                                           decoration: InputDecoration(
                                             hintText:isLoading?"Loading...": 'Adresse',
@@ -363,7 +363,7 @@ class RequestAmbulancePageState extends State<RequestAmbulancePage>
                                       ),
                                     ],
                                   )),
-                              Padding(
+                              Padding(    
                                   padding: const EdgeInsets.only(
                                       left: 25.0, right: 25.0, top: 25.0),
                                   child: Row(
